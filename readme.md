@@ -14,7 +14,7 @@ It is developed and maintained for **The Real World** community to enable resear
 This is an early development release. You can install directly from GitHub:
 
 ```bash
-pip install git+https://github.com/<your-username>/trw_ta.git
+pip install git+https://github.com/AndrejS-dev/trw_ta.git
 ````
 
 ### 🔧 OS-specific notes:
@@ -24,13 +24,13 @@ pip install git+https://github.com/<your-username>/trw_ta.git
 Make sure `git` and `pip` are in your PATH. Then run:
 
 ```bash
-pip install git+https://github.com/<your-username>/trw_ta.git
+pip install git+https://github.com/AndrejS-dev/trw_ta.git
 ```
 
 #### ✅ macOS (Terminal):
 
 ```bash
-pip install git+https://github.com/<your-username>/trw_ta.git
+pip install git+https://github.com/AndrejS-dev/trw_ta.git
 ```
 
 #### ✅ Linux (Ubuntu/Debian):
@@ -44,7 +44,7 @@ sudo apt update && sudo apt install python3-pip git
 Then install:
 
 ```bash
-pip install git+https://github.com/<your-username>/trw_ta.git
+pip install git+https://github.com/AndrejS-dev/trw_ta.git
 ```
 
 ---
