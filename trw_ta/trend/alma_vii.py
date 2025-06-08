@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('signal')
 def alma_vii(high: pd.Series, low: pd.Series, close: pd.Series, entry_src: pd.Series,
     alma_length: int = 40, hma_length: int = 20, offset: float = 0.7, sigma: float = 4.0) -> pd.Series:
     """https://www.tradingview.com/script/YIm6QQ4I-vii-Alma/"""

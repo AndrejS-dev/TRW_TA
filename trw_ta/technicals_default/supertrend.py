@@ -1,5 +1,7 @@
 import pandas as pd
+from trw_ta import register_outputs
 
+@register_outputs('supertrend', 'direction')
 def supertrend(high: pd.Series, low: pd.Series, close: pd.Series, atr_period: int = 10, factor: float = 3.0) -> pd.DataFrame:
     tr1 = high - low
     tr2 = (high - close.shift()).abs()

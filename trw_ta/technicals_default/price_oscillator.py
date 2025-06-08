@@ -1,5 +1,7 @@
 import pandas as pd
+from trw_ta import register_outputs
 
+@register_outputs('po', 'signal', 'hist')
 def price_oscillator(src: pd.Series, shortlen: int = 12, longlen: int = 26, signallen: int = 9, use_exp: bool = True) -> pd.DataFrame:
     def esma(series: pd.Series, length: int) -> pd.Series:
         return series.ewm(span=length, adjust=False).mean() if use_exp else series.rolling(length).mean()

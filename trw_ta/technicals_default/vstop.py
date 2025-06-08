@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('vstop', 'uptrend')
 def vstop(src: pd.Series, high: pd.Series, low: pd.Series, close: pd.Series, length: int = 20, factor: float = 2.0) -> pd.DataFrame:
     atr_vals = ta.atr2(high, low, close, length)
     stop = [np.nan] * len(src)

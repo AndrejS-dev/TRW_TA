@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('signal')
 def dema_vstop(high: pd.Series, low: pd.Series, close: pd.Series, dema_len: int = 30, vstop_len: int = 10, multiplier: float = 2.0) -> pd.Series:
     """https://www.tradingview.com/script/G3eTG18L-Dema-Vstop-viResearch/"""
     src = ta.dema(close, dema_len)

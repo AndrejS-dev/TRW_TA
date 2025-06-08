@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('it', 'lag')
 def ehlers_instantaneous_trend(high: pd.Series, low: pd.Series, alpha: float = 0.07) -> pd.DataFrame:
     """https://www.tradingview.com/v/DaHLcICg/"""
     src = (high + low) / 2

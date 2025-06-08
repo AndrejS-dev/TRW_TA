@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('rsi')
 def rsi(src: pd.Series, length: int = 14) -> pd.Series:
     change = src.diff()
     gain = change.clip(lower=0)

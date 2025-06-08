@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('osc')
 def ttm_squeeze_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 20) -> pd.Series:
     """https://www.tradingview.com/v/eFs5kf8F/"""
     e1 = (high.rolling(length).max() + low.rolling(length).min()) / 2 + close.rolling(length).mean()

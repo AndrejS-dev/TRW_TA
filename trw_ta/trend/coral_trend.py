@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('bfr', 'signal')
 def coral_trend(close: pd.Series, smoothing: int = 21, constant_d: float = 0.4) -> pd.DataFrame:
     """https://www.tradingview.com/v/qyUwc2Al/"""
     src = close.copy()

@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('vip', 'vim')
 def vortex(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 14) -> pd.DataFrame:
     vm_plus = (high - low.shift(1)).abs()
     vm_minus = (low - high.shift(1)).abs()

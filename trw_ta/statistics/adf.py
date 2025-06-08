@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.stattools import adfuller
+from trw_ta import register_outputs
 
+@register_outputs('adf', 'critical value', 'is mean reverting (bool)')
 def rolling_adf_test(series: pd.Series, lookback=100, max_lag=0, confidence='90%'):
    """https://www.tradingview.com/script/KjD8ByIQ-Augmented-Dickey-Fuller-ADF-mean-reversion-test/"""
    

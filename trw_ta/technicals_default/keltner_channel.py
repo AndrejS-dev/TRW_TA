@@ -1,6 +1,8 @@
 import pandas as pd
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('upper', 'middle', 'lower')
 def keltner_channels(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 20, mult: float = 2.0,
     atr_length: int = 10, use_ema: bool = True,bands_style: str = "Average True Range") -> pd.Series:  # Options: "Average True Range", "True Range", "Range"
     ma = ta.ema(close, length) if use_ema else ta.sma(close, length)

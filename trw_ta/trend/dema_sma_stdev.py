@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('signal')
 def dema_sma_stdev(high: pd.Series, low: pd.Series, source: pd.Series, dema_len: int = 5, sma_len: int = 60, sd_len: int = 20) -> pd.Series:
     """https://www.tradingview.com/script/WexMT4w3-DEMA-SMA-Standard-Deviation/"""
     srcl = high

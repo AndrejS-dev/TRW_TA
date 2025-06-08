@@ -1,5 +1,7 @@
 import pandas as pd
+from trw_ta import register_outputs
 
+@register_outputs('cc')
 def correlation_coefficient(source1: pd.Series, source2: pd.Series, length: int = 20) -> pd.Series:
     aligned = pd.concat([source1, source2], axis=1).dropna()
     s1 = aligned.iloc[:, 0]

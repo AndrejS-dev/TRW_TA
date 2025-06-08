@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('signal')
 def deb_supertrend(close: pd.Series, length: int = 20, mult: float = 2.0) -> pd.Series:
     """https://www.tradingview.com/v/Ja7PuNY9/"""
     price = close

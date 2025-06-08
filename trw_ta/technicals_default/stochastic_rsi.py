@@ -1,5 +1,7 @@
 import pandas as pd
+from trw_ta import register_outputs
 
+@register_outputs('k', 'd')
 def stochastic_rsi(src: pd.Series, rsi_length: int = 14, stoch_length: int = 14, smooth_k: int = 3, smooth_d: int = 3) -> pd.DataFrame:
     delta = src.diff()
     gain = delta.clip(lower=0)

@@ -1,5 +1,7 @@
 import pandas as pd
+from trw_ta import register_outputs
 
+@register_outputs('k', 'd')
 def stochastic(high: pd.Series, low: pd.Series, close: pd.Series, period_k: int = 14, smooth_k: int = 1, period_d: int = 3) -> pd.DataFrame:
     lowest_low = low.rolling(window=period_k).min()
     highest_high = high.rolling(window=period_k).max()

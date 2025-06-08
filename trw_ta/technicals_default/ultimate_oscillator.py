@@ -1,5 +1,7 @@
 import pandas as pd
+from trw_ta import register_outputs
 
+@register_outputs('uo')
 def ultimate_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, length1: int = 7, length2: int = 14, length3: int = 28) -> pd.Series:
     prev_close = close.shift(1)
     high_ = high.combine(prev_close, max)

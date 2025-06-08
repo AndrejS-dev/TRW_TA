@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('basis', ' trend')
 def enhanced_keltner_trend(high: pd.Series, low: pd.Series, close: pd.Series,
                            ma_len: int = 11, atr_len: int = 9, atr_mult: float = 0.7,
                            use_atr: bool = True, ma_type: str = "EMA") -> pd.DataFrame:

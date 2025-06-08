@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('signal')
 def median_for_loop(source: pd.Series, median_len: int = 2, a: int = 10, b: int = 60,
     threshold_l: int = 40, threshold_s: int = 15) -> pd.Series:
     """https://www.tradingview.com/script/V63HaPE4-Median-For-Loop-viResearch/"""

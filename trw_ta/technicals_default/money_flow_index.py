@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('mfi')
 def money_flow_index(src: pd.Series, volume: pd.Series, length: int = 14) -> pd.Series:
     delta = src.diff()
     upper = volume * np.where(delta <= 0, 0.0, src)

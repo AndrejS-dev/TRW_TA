@@ -1,6 +1,8 @@
+from .list_of_functions import function_list, register_outputs
+
 from .ta_core import sma, dema, ema, cum, nz, atr1, atr2, wma, highest, lowest, average_day_range, rma, true_range, stdev, ma
 from .ta_core import  bollinger_bands, dev, hma, tr, rate_of_change, lsma, median, momentum, smma, tema, mad, aad, rmsd, emd
-from .ta_core import  price_volume_trend, alma, keltner
+from .ta_core import  price_volume_trend, alma, keltner, zlema
 
 
 from .technicals_default.alma import alma
@@ -52,6 +54,8 @@ from .technicals_default.williams_percent_r import williams_percent_r
 
 from .statistics.adf import rolling_adf_test
 from .statistics.linear_regression import linear_regression
+from .statistics.garch_volatility import garch_volatility
+from .statistics.linear_regression_slope import linear_regression_slope
 
 from .trend.median_kijun_sen import median_kijun_sen
 from .trend.mad_trend import mad_trend
@@ -82,3 +86,6 @@ from .trend.volume_summer import volume_summer
 from .trend.deb_supertrend import deb_supertrend
 from .trend.boosted_moving_average import boosted_moving_average
 from .trend.enhanced_keltner_trend import enhanced_keltner_trend
+from .trend.follow_line import follow_line
+from .trend.rsi_trail import rsi_trail
+from .trend.adaptive_price_zone import adaptive_price_zone

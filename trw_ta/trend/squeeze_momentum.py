@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('val')
 def squeeze_momentum(high: pd.Series, low: pd.Series, close: pd.Series, bb_length: int = 20, bb_mult: float = 2.0, kc_length: int = 20, kc_mult: float = 1.5, use_tr: bool = True) -> pd.DataFrame:
     """https://www.tradingview.com/v/nqQ1DT5a/"""
     source = close

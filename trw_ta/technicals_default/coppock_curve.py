@@ -1,6 +1,8 @@
 import pandas as pd
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('cc')
 def coppock_curve(close: pd.Series, wma_length: int = 10, long_roc_length: int = 14, short_roc_length: int = 11) -> pd.Series:
     # Rate of Change (RoC)
     roc_long = close.pct_change(periods=long_roc_length) * 100

@@ -1,6 +1,8 @@
 import pandas as pd
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('kst', 'signal')
 def know_sure_thing(close: pd.Series,
                   roclen1: int = 10, smalen1: int = 10,
                   roclen2: int = 15, smalen2: int = 10,

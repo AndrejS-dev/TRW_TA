@@ -1,5 +1,7 @@
 import pandas as pd
+from trw_ta import register_outputs
 
+@register_outputs('tsi')
 def true_strength_index(series: pd.Series, short_len: int = 13, long_len: int = 25) -> pd.Series:
 
     momentum = series.diff()

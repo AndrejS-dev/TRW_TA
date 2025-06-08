@@ -1,4 +1,5 @@
 import pandas as pd
+from trw_ta import register_outputs
 
 def tsi(series: pd.Series, short_len: int, long_len: int) -> pd.Series:
     momentum = series.diff()
@@ -13,6 +14,7 @@ def tsi(series: pd.Series, short_len: int, long_len: int) -> pd.Series:
     tsi = 100 * ema2 / abs_ema2
     return tsi
 
+@register_outputs('ergodic', 'signal')
 def smi_ergodic(close: pd.Series, short_len: int = 5, long_len: int = 20, sig_len: int = 5) -> pd.DataFrame:
     ergodic = tsi(close, short_len, long_len)
     signal = ergodic.ewm(span=sig_len, adjust=False).mean()

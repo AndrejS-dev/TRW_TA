@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('hv')
 def historical_volatility(close: pd.Series, length: int = 10, timeframe: str = 'daily') -> pd.Series:
     annual = 365
     timeframe = timeframe.lower()

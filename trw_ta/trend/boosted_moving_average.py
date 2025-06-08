@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('boosted_ma', 'signal')
 def boosted_moving_average(close: pd.Series, length: int = 43, boost_factor: float = 1.5) -> pd.DataFrame:
     """https://www.tradingview.com/v/eashAKsX/"""
     ema1 = close.ewm(span=length, adjust=False).mean()

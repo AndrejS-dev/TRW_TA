@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('rci')
 def rank_correlation_index(src: pd.Series, length: int = 10) -> pd.Series:
     rci_vals = []
 

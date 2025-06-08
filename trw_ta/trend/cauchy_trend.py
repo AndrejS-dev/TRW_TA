@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from trw_ta import register_outputs
 
 def cauchy_pdf(offset: int, gamma: float) -> float:
     numerator = gamma ** 2
@@ -67,6 +68,7 @@ def supertrend(cwm_avg, src, atr, factor):
     return pd.Series(st_vals), pd.Series(dir_vals)
 
 
+@register_outputs('cauchyTrend', 'trend', 'cwm_avg')
 def cauchy_trend(high: pd.Series, low: pd.Series, close: pd.Series, input_src: pd.Series, length: int = 28,
                              gamma: float = 0.5, atr_len: int = 14, atr_mult: float = 2.0) -> pd.DataFrame:
     """https://www.tradingview.com/script/XuPnhy3w-CauchyTrend-InvestorUnknown/"""

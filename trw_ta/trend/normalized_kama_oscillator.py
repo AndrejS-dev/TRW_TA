@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('nko')
 def normalized_kama_osc(close: pd.Series, fast_length: int = 2, slow_length: int = 30, er_period: int = 10, normalization_lookback: int = 100) -> pd.Series:
     """https://www.tradingview.com/script/OwtiIzT3-Normalized-KAMA-Oscillator-Ikke-Omar/"""
     change = (close - close.shift(er_period)).abs()

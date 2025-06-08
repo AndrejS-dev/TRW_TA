@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('trix')
 def trix(close: pd.Series, length: int = 18) -> pd.Series:
     log_close = np.log(close)
 

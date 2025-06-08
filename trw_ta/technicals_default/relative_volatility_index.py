@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('rvi')
 def relative_volatility_index(src: pd.Series, length: int = 10, ema_len: int = 14) -> pd.Series:
     stddev = src.rolling(length).std()
     change = src.diff()

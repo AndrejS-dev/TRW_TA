@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
 def swma(series: pd.Series) -> pd.Series:
     """
@@ -11,6 +12,7 @@ def swma(series: pd.Series) -> pd.Series:
     weights = [1, 2, 2, 1]
     return series.rolling(window=4).apply(lambda x: np.dot(x, weights) / sum(weights), raw=True)
 
+@register_outputs('rvi', 'signal')
 def relative_vigor_index(open_: pd.Series, high: pd.Series, low: pd.Series, close: pd.Series, length: int = 10) -> pd.DataFrame:
     """
     Relative Vigor Index (RVGI)

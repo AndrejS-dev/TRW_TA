@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('direction', 'avg', 'avg_p', 'avg_m')
 def emd_trend(source: pd.Series, length: int, aad_mult: float, avg_type: str) -> pd.DataFrame:
     """https://www.tradingview.com/script/bwbICwa6-EMD-Trend-InvestorUnknown/"""
     avg = ta.ma(source, length, avg_type)

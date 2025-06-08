@@ -1,7 +1,9 @@
 from .. import ta_core as ta
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('dmi+', 'dmi-')
 def dmi(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 14) -> pd.DataFrame:
     up_move = high.diff()
     down_move = -low.diff()
@@ -20,6 +22,7 @@ def dmi(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 14) -> 
         "minus_di": minus_di
     })
 
+@register_outputs('adx')
 def adx(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 14, adx_smoothing: int = 14) -> pd.DataFrame:
     up_move = high.diff()
     down_move = -low.diff()

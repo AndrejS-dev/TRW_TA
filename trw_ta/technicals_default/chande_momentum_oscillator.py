@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('cmo')
 def chande_momentum_oscillator(source: pd.Series, length: int = 9) -> pd.Series:
     mom = source.diff()
 

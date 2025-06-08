@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('sar')
 def sar(high: pd.Series, low: pd.Series, close: pd.Series, start=0.02, inc=0.02, max_val=0.2) -> pd.Series:
     sar = np.full(len(close), np.nan)
     max_min = np.nan

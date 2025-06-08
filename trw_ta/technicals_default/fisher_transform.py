@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('fish1', 'fish2')
 def fisher_transform(high: pd.Series, low: pd.Series, length: int = 9) -> pd.DataFrame:
     hl2 = (high + low) / 2
     high_ = hl2.rolling(window=length).max()

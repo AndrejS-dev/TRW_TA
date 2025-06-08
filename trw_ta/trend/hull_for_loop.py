@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('signal')
 def hull_for_loop(open_: pd.Series, high: pd.Series, low: pd.Series, close: pd.Series, hma_len: int = 15,
     loop_from: int = 1, loop_to: int = 50, threshold_l: int = 49, threshold_s: int = -10) -> pd.Series:
     """https://www.tradingview.com/script/CMsOR65t-Hull-For-Loop-viResearch/"""

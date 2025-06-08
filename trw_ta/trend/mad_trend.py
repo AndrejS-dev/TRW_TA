@@ -1,6 +1,8 @@
 import pandas as pd
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('direction', 'median', 'med_p', 'med_m')
 def mad_trend(source: pd.Series, length: int, mad_mult: float) -> pd.DataFrame:
     """https://www.tradingview.com/script/nhyCYGKn-MadTrend-InvestorUnknown/"""
     median_ = ta.median(source, length)

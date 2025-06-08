@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('signal')
 def volume_trend_swing_points(close: pd.Series, volume: pd.Series, x: int = 30, y: int = 30) -> pd.Series:
     """https://www.tradingview.com/script/oGM8qJqv-Volume-Trend-Swing-Points-viResearch/"""
     pvt = ta.price_volume_trend(close, volume)

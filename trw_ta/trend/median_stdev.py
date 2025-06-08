@@ -1,7 +1,9 @@
 import pandas as pd
 import numpy as np
 import trw_ta as ta
+from trw_ta import register_outputs
 
+@register_outputs('signal')
 def median_stdev(
     high: pd.Series,
     low: pd.Series,
@@ -17,7 +19,7 @@ def median_stdev(
 
     median = dema.rolling(window=median_len).median()
 
-    atr = ta.atr(high, low, close, length=atr_len) * atr_mul
+    atr = ta.atr1(high, low, close, length=atr_len) * atr_mul
 
     upper = median + atr
     lower = median - atr

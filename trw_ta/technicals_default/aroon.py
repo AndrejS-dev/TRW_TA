@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from trw_ta import register_outputs
 
+@register_outputs('up', 'down')
 def aroon(high: pd.Series, low: pd.Series, length: int = 14) -> pd.DataFrame:
     def bars_since_max(x):
         return length - 1 - np.argmax(x)
