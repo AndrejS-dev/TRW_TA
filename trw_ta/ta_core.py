@@ -254,3 +254,37 @@ def price_volume_trend(close: pd.Series, volume: pd.Series) -> pd.Series:
 def keltner(close: pd.Series, high: pd.Series, low: pd.Series, length: int, mult: float) -> pd.Series:
     tr = tr(high, low, close)
     return close.ewm(span=length, adjust=False).mean() + mult * tr.ewm(span=length, adjust=False).mean()
+
+@register_outputs('zlag_dema')
+def zlag_dema(src: pd.Series, length: int) -> pd.Series:
+    zdema1 = ema(src, length)
+    zdema2 = ema(zdema1, length)
+    dema1 = 2 * zdema1 - zdema2
+    zdema12 = ema(dema1, length)
+    zdema22 = ema(zdema12, length)
+    return 2 * zdema12 - zdema22
+
+@register_outputs('zlag_ma')
+def zlag_ma(src: pd.Series, length: int) -> pd.Series:
+    alpha = 2.0 / (1.0 + length)
+    per = int(np.ceil((length - 1.0) / 2.0))
+    zlagma = pd.Series(index=src.index, dtype='float64')
+    zlagma.iloc[0] = src.iloc[0]
+
+    for i in range(1, len(src)):
+        prev = zlagma.iloc[i - 1]
+        prev_per = zlagma.iloc[i - per] if i - per >= 0 else src.iloc[i]
+        zlagma.iloc[i] = prev + alpha * (2.0 * src.iloc[i] - prev_per - prev)
+
+    return zlagma
+
+@register_outputs('zlag_tema')
+def zlag_tema(src: pd.Series, length: int) -> pd.Series:
+    ema1 = ema(src, length)
+    ema2 = ema(ema1, length)
+    ema3 = ema(ema2, length)
+    out = 3 * (ema1 - ema2) + ema3
+    ema1a = ema(out, length)
+    ema2a = ema(ema1a, length)
+    ema3a = ema(ema2a, length)
+    return 3 * (ema1a - ema2a) + ema3a

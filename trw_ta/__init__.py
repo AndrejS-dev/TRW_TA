@@ -2,7 +2,7 @@ from .list_of_functions import function_list, register_outputs
 
 from .ta_core import sma, dema, ema, cum, nz, atr1, atr2, wma, highest, lowest, average_day_range, rma, true_range, stdev, ma
 from .ta_core import  bollinger_bands, dev, hma, tr, rate_of_change, lsma, median, momentum, smma, tema, mad, aad, rmsd, emd
-from .ta_core import  price_volume_trend, alma, keltner, zlema
+from .ta_core import  price_volume_trend, alma, keltner, zlema, zlag_dema, zlag_ma, zlag_tema
 
 
 from .technicals_default.alma import alma
@@ -89,3 +89,22 @@ from .trend.enhanced_keltner_trend import enhanced_keltner_trend
 from .trend.follow_line import follow_line
 from .trend.rsi_trail import rsi_trail
 from .trend.adaptive_price_zone import adaptive_price_zone
+
+from .trend.sine_wma_atr import swma_atr_signals
+from .trend.adaptive_trend_flow import adaptive_trend_flow
+from .trend.dpmo import dpmo
+from .trend.wave_trend import wavetrend
+from .trend.dynamic_score_psar import dynamic_score_psar
+from .trend.ema_volatility_channel import ema_volatility_channel
+from .trend.sd_zero_lag import sd_zero_lag
+from .trend.quartile_for_loop import quartile_for_loop
+from .trend.adaptive_sigmoid_zscore import adaptive_sigmoid_zscore
+from .trend.fdi_cumulative_price_momentum import fdi_cumulative_price_momentum
+from .trend.fsvzo import fsvzo
+from .trend.reflex_oscillator import reflex_oscillator
+from .trend.trendflex_oscillator import trendflex_oscillator
+from .trend.chandelier_exit_oscillator import chandelier_exit_oscillator
+from .trend.momentum_acceleration import momentum_acceleration
+from .trend.variable_moving_average import variable_moving_average
+from .trend.pulsema_oscillator import pulsema_oscillator
+from .trend.vams_oscillator import vams_oscillator

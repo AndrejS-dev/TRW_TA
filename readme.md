@@ -56,6 +56,9 @@ import trw_ta as ta
 
 # Example: Use a translated TradingView indicator
 df['RSI'] = ta.rsi(df['close'], 14)
+
+# List all available functions with their expected inputs and outputs
+ta.function_list()
 ```
 
 Most functions accept `pandas.Series` inputs for flexibility and integration with your backtesting pipeline.

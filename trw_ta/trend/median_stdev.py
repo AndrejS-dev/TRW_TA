@@ -4,15 +4,8 @@ import trw_ta as ta
 from trw_ta import register_outputs
 
 @register_outputs('signal')
-def median_stdev(
-    high: pd.Series,
-    low: pd.Series,
-    close: pd.Series,
-    len_dema: int = 7,
-    median_len: int = 61,
-    atr_len: int = 6,
-    atr_mul: float = 0.6,
-    stdev_len: int = 27) -> pd.Series:
+def median_stdev(high: pd.Series, low: pd.Series, close: pd.Series, len_dema: int = 7,
+    median_len: int = 61, atr_len: int = 6, atr_mul: float = 0.6, stdev_len: int = 27) -> pd.Series:
     """https://www.tradingview.com/script/ywl57T7A-Median-Standard-Deviation-viResearch/"""
 
     dema = ta.dema(close, length=len_dema)
