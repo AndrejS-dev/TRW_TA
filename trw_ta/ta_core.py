@@ -288,3 +288,20 @@ def zlag_tema(src: pd.Series, length: int) -> pd.Series:
     ema2a = ema(ema1a, length)
     ema3a = ema(ema2a, length)
     return 3 * (ema1a - ema2a) + ema3a
+
+@register_outputs('gau_ma')
+def gaussian_ma(src: pd.Series, length: int = 100) -> pd.Series:
+    result = []
+    for i in range(len(src)):
+        if i < length:
+            result.append(np.nan)
+            continue
+        window = src[i - length + 1:i + 1]
+        mad = (window - window.mean()).abs().mean()
+        std = window.std()
+        sigma = (mad + std) / 2 if (mad + std) != 0 else 1
+        weights = np.exp(-0.5 * ((np.arange(length) - (length - 1)) / sigma) ** 2)
+        weights /= weights.sum()
+        smoothed = np.dot(window, weights)
+        result.append(smoothed)
+    return pd.Series(result, index=src.index)

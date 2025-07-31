@@ -2,7 +2,7 @@ from .list_of_functions import function_list, register_outputs
 
 from .ta_core import sma, dema, ema, cum, nz, atr1, atr2, wma, highest, lowest, average_day_range, rma, true_range, stdev, ma
 from .ta_core import  bollinger_bands, dev, hma, tr, rate_of_change, lsma, median, momentum, smma, tema, mad, aad, rmsd, emd
-from .ta_core import  price_volume_trend, alma, keltner, zlema, zlag_dema, zlag_ma, zlag_tema
+from .ta_core import  price_volume_trend, alma, keltner, zlema, zlag_dema, zlag_ma, zlag_tema, gaussian_ma
 
 
 from .technicals_default.alma import alma
@@ -108,3 +108,13 @@ from .trend.momentum_acceleration import momentum_acceleration
 from .trend.variable_moving_average import variable_moving_average
 from .trend.pulsema_oscillator import pulsema_oscillator
 from .trend.vams_oscillator import vams_oscillator
+
+from .statistics.autocorrelation import autocorrelation
+from .trend.strength_index import strength_index
+from .mean_reversion.quantum_dip_hunter import quantum_dip_hunter
+from .trend.log_ma import logarithmic_moving_average
+from .trend.lowess import lowess_trend
+from .trend.stochastic_zscore import stochastic_zscore
+from .trend.sma_trend_spectrum import sma_trend_spectrum
+from .trend.schaff_trend_cycle import schaff_trend_cycle
+from .trend.void_momentum_zscore import void_momentum_zscore
