@@ -118,3 +118,21 @@ from .trend.stochastic_zscore import stochastic_zscore
 from .trend.sma_trend_spectrum import sma_trend_spectrum
 from .trend.schaff_trend_cycle import schaff_trend_cycle
 from .trend.void_momentum_zscore import void_momentum_zscore
+
+from .trend.bears_bulls import bears_bulls
+from .trend.rmo import rmo
+from .trend.projection_bands import projection_bands
+from .trend.premier_stochastic_oscillator import premier_stochastic_oscillator
+from .trend.trend_trigger_factor import trend_trigger_factor
+from .trend.ehlers_simple_cycle_indicator import ehlers_simple_cycle_indicator
+from .trend.ehlers_center_of_gravity import ehlers_center_of_gravity
+from .trend.firefly_oscillator import firefly_oscillator
+from .trend.hurst_cycle_channel_oscillator import hurst_cycle_channel_oscillator
+from .trend.anchored_momentum import anchored_momentum
+from .statistics.kaufman_stress_indicator import kaufman_stress_indicator
+from .trend.forward_backward_exponential_oscillator import forward_backward_exponential_oscillator
+from .trend.moving_average_trend_sniper import moving_average_trend_sniper
+from .trend.trendlines_oscillator import trendlines_oscillator
+from .trend.pure_price_zone_flow import pure_price_zone_flow
+from .trend.continuation_index import continuation_index
+from .trend.kama_trend_flip import kama_trend_flip
