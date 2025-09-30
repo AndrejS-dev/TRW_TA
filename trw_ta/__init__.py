@@ -1,10 +1,12 @@
+# Library helper functions
 from .list_of_functions import function_list, register_outputs
 
+# Core functions
 from .ta_core import sma, dema, ema, cum, nz, atr1, atr2, wma, highest, lowest, average_day_range, rma, true_range, stdev, ma
 from .ta_core import  bollinger_bands, dev, hma, tr, rate_of_change, lsma, median, momentum, smma, tema, mad, aad, rmsd, emd
 from .ta_core import  price_volume_trend, alma, keltner, zlema, zlag_dema, zlag_ma, zlag_tema, gaussian_ma
 
-
+# Default TradingView indicators
 from .technicals_default.alma import alma
 from .technicals_default.accumulation_distribution import accumulation_distribution
 from .technicals_default.aroon import aroon
@@ -52,87 +54,92 @@ from .technicals_default.vstop import vstop
 from .technicals_default.vortex import vortex
 from .technicals_default.williams_percent_r import williams_percent_r
 
+# Statistical tools
 from .statistics.adf import rolling_adf_test
 from .statistics.linear_regression import linear_regression
 from .statistics.garch_volatility import garch_volatility
 from .statistics.linear_regression_slope import linear_regression_slope
+from .statistics.autocorrelation import autocorrelation
+from .statistics.kaufman_stress_indicator import kaufman_stress_indicator
 
+# Volume tools
+from .volume.fisher_volume_transform import fisher_volume_transform
+from .volume.volume_summer import volume_summer
+from .volume.volume_trend_swing_points import volume_trend_swing_points
+from .volume.volume_z_score import volume_z_score
+
+# Momentum tools
+from .momentum.adaptive_sigmoid_zscore import adaptive_sigmoid_zscore
+from .momentum.anchored_momentum import anchored_momentum
+from .momentum.chandelier_exit_oscillator import chandelier_exit_oscillator
+from .momentum.dpmo import dpmo
+from .momentum.ehlers_center_of_gravity import ehlers_center_of_gravity
+from .momentum.ehlers_instantaneous_trend import ehlers_instantaneous_trend
+from .momentum.elliot_wave_oscillator import elliot_wave_oscillator
+from .momentum.fdi_cumulative_price_momentum import fdi_cumulative_price_momentum
+from .momentum.firefly_oscillator import firefly_oscillator
+from .momentum.forward_backward_exponential_oscillator import forward_backward_exponential_oscillator
+from .momentum.fsvzo import fsvzo
+from .momentum.gaussian_mixture_model import gaussian_mixture_model
+from .momentum.hurst_cycle_channel_oscillator import hurst_cycle_channel_oscillator
+from .momentum.hurst_momentum_oscillator import hurst_momentum_oscillator
+from .momentum.momentum_acceleration import momentum_acceleration
+from .momentum.normalized_kama_oscillator import normalized_kama_osc
+from .momentum.premier_stochastic_oscillator import premier_stochastic_oscillator
+from .momentum.pulsema_oscillator import pulsema_oscillator
+from .momentum.reflex_oscillator import reflex_oscillator
+from .momentum.rsi_trail import rsi_trail
+from .momentum.savitzky_golay_hampel_filter import savitzky_golay_hampel_filter
+from .momentum.schaff_trend_cycle import schaff_trend_cycle
+from .momentum.squeeze_momentum import squeeze_momentum
+from .momentum.stochastic_zscore import stochastic_zscore
+from .momentum.trendflex_oscillator import trendflex_oscillator
+from .momentum.trendlines_oscillator import trendlines_oscillator
+from .momentum.ttm_squeeze_oscillator import ttm_squeeze_oscillator
+from .momentum.vams_oscillator import vams_oscillator
+from .momentum.void_momentum_zscore import void_momentum_zscore
+from .momentum.wave_trend import wavetrend
+
+# Trend tools
 from .trend.median_kijun_sen import median_kijun_sen
 from .trend.mad_trend import mad_trend
 from .trend.aad_trend import aad_trend
 from .trend.rmsd_trend import rmsd_trend
 from .trend.emd_trend import emd_trend
 from .trend.cauchy_trend import cauchy_trend
-
 from .trend.median_stdev import median_stdev
-from .trend.volume_trend_swing_points import volume_trend_swing_points
 from .trend.hma_swing_points import hma_swing_points
 from .trend.median_for_loop import median_for_loop
 from .trend.dema_vstop import dema_vstop
 from .trend.hull_for_loop import hull_for_loop
 from .trend.dema_sma_stdev import dema_sma_stdev
 from .trend.alma_vii import alma_vii
-
 from .trend.white_noise import white_noise
-from .trend.normalized_kama_oscillator import normalized_kama_osc
-
 from .trend.coral_trend import coral_trend
-from .trend.squeeze_momentum import squeeze_momentum
-from .trend.ehlers_instantaneous_trend import ehlers_instantaneous_trend
-
-from .trend.ttm_squeeze_oscillator import ttm_squeeze_oscillator
-from .trend.elliot_wave_oscillator import elliot_wave_oscillator
-from .trend.volume_summer import volume_summer
 from .trend.deb_supertrend import deb_supertrend
 from .trend.boosted_moving_average import boosted_moving_average
 from .trend.enhanced_keltner_trend import enhanced_keltner_trend
 from .trend.follow_line import follow_line
-from .trend.rsi_trail import rsi_trail
 from .trend.adaptive_price_zone import adaptive_price_zone
-
 from .trend.sine_wma_atr import swma_atr_signals
 from .trend.adaptive_trend_flow import adaptive_trend_flow
-from .trend.dpmo import dpmo
-from .trend.wave_trend import wavetrend
 from .trend.dynamic_score_psar import dynamic_score_psar
 from .trend.ema_volatility_channel import ema_volatility_channel
 from .trend.sd_zero_lag import sd_zero_lag
 from .trend.quartile_for_loop import quartile_for_loop
-from .trend.adaptive_sigmoid_zscore import adaptive_sigmoid_zscore
-from .trend.fdi_cumulative_price_momentum import fdi_cumulative_price_momentum
-from .trend.fsvzo import fsvzo
-from .trend.reflex_oscillator import reflex_oscillator
-from .trend.trendflex_oscillator import trendflex_oscillator
-from .trend.chandelier_exit_oscillator import chandelier_exit_oscillator
-from .trend.momentum_acceleration import momentum_acceleration
 from .trend.variable_moving_average import variable_moving_average
-from .trend.pulsema_oscillator import pulsema_oscillator
-from .trend.vams_oscillator import vams_oscillator
-
-from .statistics.autocorrelation import autocorrelation
 from .trend.strength_index import strength_index
-from .mean_reversion.quantum_dip_hunter import quantum_dip_hunter
 from .trend.log_ma import logarithmic_moving_average
 from .trend.lowess import lowess_trend
-from .trend.stochastic_zscore import stochastic_zscore
 from .trend.sma_trend_spectrum import sma_trend_spectrum
-from .trend.schaff_trend_cycle import schaff_trend_cycle
-from .trend.void_momentum_zscore import void_momentum_zscore
-
 from .trend.bears_bulls import bears_bulls
 from .trend.rmo import rmo
 from .trend.projection_bands import projection_bands
-from .trend.premier_stochastic_oscillator import premier_stochastic_oscillator
 from .trend.trend_trigger_factor import trend_trigger_factor
-from .trend.ehlers_simple_cycle_indicator import ehlers_simple_cycle_indicator
-from .trend.ehlers_center_of_gravity import ehlers_center_of_gravity
-from .trend.firefly_oscillator import firefly_oscillator
-from .trend.hurst_cycle_channel_oscillator import hurst_cycle_channel_oscillator
-from .trend.anchored_momentum import anchored_momentum
-from .statistics.kaufman_stress_indicator import kaufman_stress_indicator
-from .trend.forward_backward_exponential_oscillator import forward_backward_exponential_oscillator
 from .trend.moving_average_trend_sniper import moving_average_trend_sniper
-from .trend.trendlines_oscillator import trendlines_oscillator
 from .trend.pure_price_zone_flow import pure_price_zone_flow
 from .trend.continuation_index import continuation_index
 from .trend.kama_trend_flip import kama_trend_flip
+
+# Mean Reversion tools
+from .mean_reversion.quantum_dip_hunter import quantum_dip_hunter
