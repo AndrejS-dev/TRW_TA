@@ -305,3 +305,11 @@ def gaussian_ma(src: pd.Series, length: int = 100) -> pd.Series:
         smoothed = np.dot(window, weights)
         result.append(smoothed)
     return pd.Series(result, index=src.index)
+
+@register_outputs('rescaled')
+def rescale(src: pd.Series, old_min: float, old_max: float, new_min: float, new_max: float) -> pd.Series:
+    """Rescale a source series from one bounded range to another."""
+    denominator = np.maximum(old_max - old_min, 1e-10)
+    rescaled = new_min + (new_max - new_min) * (src - old_min) / denominator
+    
+    return rescaled

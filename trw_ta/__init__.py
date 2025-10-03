@@ -4,7 +4,7 @@ from .list_of_functions import function_list, register_outputs
 # Core functions
 from .ta_core import sma, dema, ema, cum, nz, atr1, atr2, wma, highest, lowest, average_day_range, rma, true_range, stdev, ma
 from .ta_core import  bollinger_bands, dev, hma, tr, rate_of_change, lsma, median, momentum, smma, tema, mad, aad, rmsd, emd
-from .ta_core import  price_volume_trend, alma, keltner, zlema, zlag_dema, zlag_ma, zlag_tema, gaussian_ma
+from .ta_core import  price_volume_trend, alma, keltner, zlema, zlag_dema, zlag_ma, zlag_tema, gaussian_ma, rescale
 
 # Default TradingView indicators
 from .technicals_default.alma import alma
@@ -88,17 +88,20 @@ from .momentum.normalized_kama_oscillator import normalized_kama_osc
 from .momentum.premier_stochastic_oscillator import premier_stochastic_oscillator
 from .momentum.pulsema_oscillator import pulsema_oscillator
 from .momentum.reflex_oscillator import reflex_oscillator
+from .momentum.reversal_scalper import reversal_scalper
 from .momentum.rsi_trail import rsi_trail
 from .momentum.savitzky_golay_hampel_filter import savitzky_golay_hampel_filter
 from .momentum.schaff_trend_cycle import schaff_trend_cycle
 from .momentum.squeeze_momentum import squeeze_momentum
 from .momentum.stochastic_zscore import stochastic_zscore
+from .momentum.trades_in_favor import trades_in_favor
 from .momentum.trendflex_oscillator import trendflex_oscillator
 from .momentum.trendlines_oscillator import trendlines_oscillator
 from .momentum.ttm_squeeze_oscillator import ttm_squeeze_oscillator
 from .momentum.vams_oscillator import vams_oscillator
 from .momentum.void_momentum_zscore import void_momentum_zscore
 from .momentum.wave_trend import wavetrend
+from .momentum.weis_wave_candle import weis_wave_candle
 
 # Trend tools
 from .trend.median_kijun_sen import median_kijun_sen
@@ -110,6 +113,7 @@ from .trend.cauchy_trend import cauchy_trend
 from .trend.median_stdev import median_stdev
 from .trend.hma_swing_points import hma_swing_points
 from .trend.median_for_loop import median_for_loop
+from .trend.market_sentiment_trend_gauge import market_sentiment_trend_gauge
 from .trend.dema_vstop import dema_vstop
 from .trend.hull_for_loop import hull_for_loop
 from .trend.dema_sma_stdev import dema_sma_stdev
