@@ -8,5 +8,9 @@ setup(
         'pandas',
         'numpy',
         'statsmodels',
+        'requests',
+        'ccxt',
+        'scikit-learn',
+        'scipy',
     ],
 )

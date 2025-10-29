@@ -61,6 +61,10 @@ def atr2(high: pd.Series, low: pd.Series, close: pd.Series, length: int) -> pd.S
     tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
     return tr.ewm(alpha=1/length, adjust=False).mean()
 
+@register_outputs('atr')
+def atr(high: pd.Series, low: pd.Series, close: pd.Series, length: int) -> pd.Series:
+    return atr1(high, low, close, length)
+
 @register_outputs('cum')
 def cum(series: pd.Series) -> pd.Series:
     """Cumulative sum"""

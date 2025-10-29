@@ -2,7 +2,7 @@
 from .list_of_functions import function_list, register_outputs
 
 # Core functions
-from .ta_core import sma, dema, ema, cum, nz, atr1, atr2, wma, highest, lowest, average_day_range, rma, true_range, stdev, ma
+from .ta_core import sma, dema, ema, cum, nz, atr, atr1, atr2, wma, highest, lowest, average_day_range, rma, true_range, stdev, ma
 from .ta_core import  bollinger_bands, dev, hma, tr, rate_of_change, lsma, median, momentum, smma, tema, mad, aad, rmsd, emd
 from .ta_core import  price_volume_trend, alma, keltner, zlema, zlag_dema, zlag_ma, zlag_tema, gaussian_ma, rescale
 
@@ -55,6 +55,9 @@ from .technicals_default.vortex import vortex
 from .technicals_default.williams_percent_r import williams_percent_r
 
 # Statistical tools
+from .statistics.performance_metrics import total_return, annualized_return, mean_return, volatility, sharpe_ratio, sortino_ratio, information_ratio
+from .statistics.performance_metrics import treynor_ratio, calmar_ratio, max_drawdown, average_drawdown, recovery_factor, ulcer_index, hit_ratio
+from .statistics.performance_metrics import profit_factor, payoff_ratio, expected_value, alpha, beta, omega_ratio
 from .statistics.adf import rolling_adf_test
 from .statistics.linear_regression import linear_regression
 from .statistics.garch_volatility import garch_volatility
@@ -75,6 +78,7 @@ from .momentum.chandelier_exit_oscillator import chandelier_exit_oscillator
 from .momentum.dpmo import dpmo
 from .momentum.ehlers_center_of_gravity import ehlers_center_of_gravity
 from .momentum.ehlers_instantaneous_trend import ehlers_instantaneous_trend
+from .momentum.ehlers_simple_cycle_indicator import ehlers_simple_cycle_indicator
 from .momentum.elliot_wave_oscillator import elliot_wave_oscillator
 from .momentum.fdi_cumulative_price_momentum import fdi_cumulative_price_momentum
 from .momentum.firefly_oscillator import firefly_oscillator
@@ -147,3 +151,15 @@ from .trend.kama_trend_flip import kama_trend_flip
 
 # Mean Reversion tools
 from .mean_reversion.quantum_dip_hunter import quantum_dip_hunter
+
+# Utility functions
+from .utils.anchored_synthetic_data_generator import generate_anchored_synthetic_prices
+from .utils.fetch_ohlcv_data import fetch_ohlcv_data
+from .utils.telegram import send_telegram_message
+
+# Machine Learning
+from .ml.ml_core import euclidean_distance, manhattan_distance, minkowski_distance, cosine_distance, kl_divergence, js_divergence
+from .ml.ml_core import mahalanobis_distance, lorentzian_distance, sigmoid, tanh, relu, leaky_relu, softmax, gelu, swish, mse, mae
+from .ml.ml_core import huber_loss, binary_crossentropy, categorical_crossentropy, hinge_loss, minmax_scaling, l2_normalize
+from .ml.ml_core import log_scale, linear_kernel, polynomial_kernel, rbf_kernel, laplacian_kernel, sigmoid_kernel, l1_regularization
+from .ml.ml_core import l2_regularization, soft_threshold, dropout
