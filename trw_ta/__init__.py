@@ -74,6 +74,7 @@ from .volume.volume_z_score import volume_z_score
 # Momentum tools
 from .momentum.adaptive_sigmoid_zscore import adaptive_sigmoid_zscore
 from .momentum.anchored_momentum import anchored_momentum
+from .momentum.beardy_squeeze import beardy_squeeze
 from .momentum.chandelier_exit_oscillator import chandelier_exit_oscillator
 from .momentum.dpmo import dpmo
 from .momentum.ehlers_center_of_gravity import ehlers_center_of_gravity
@@ -83,12 +84,15 @@ from .momentum.elliot_wave_oscillator import elliot_wave_oscillator
 from .momentum.fdi_cumulative_price_momentum import fdi_cumulative_price_momentum
 from .momentum.firefly_oscillator import firefly_oscillator
 from .momentum.forward_backward_exponential_oscillator import forward_backward_exponential_oscillator
+from .momentum.fractal_strength_oscillator import fractal_strength_oscillator
 from .momentum.fsvzo import fsvzo
 from .momentum.gaussian_mixture_model import gaussian_mixture_model
 from .momentum.hurst_cycle_channel_oscillator import hurst_cycle_channel_oscillator
 from .momentum.hurst_momentum_oscillator import hurst_momentum_oscillator
 from .momentum.momentum_acceleration import momentum_acceleration
+from .momentum.mro_oscillator import mro_oscillator
 from .momentum.normalized_kama_oscillator import normalized_kama_osc
+from .momentum.oscillator_matrix import oscillator_matrix
 from .momentum.premier_stochastic_oscillator import premier_stochastic_oscillator
 from .momentum.pulsema_oscillator import pulsema_oscillator
 from .momentum.reflex_oscillator import reflex_oscillator
@@ -102,10 +106,15 @@ from .momentum.trades_in_favor import trades_in_favor
 from .momentum.trendflex_oscillator import trendflex_oscillator
 from .momentum.trendlines_oscillator import trendlines_oscillator
 from .momentum.ttm_squeeze_oscillator import ttm_squeeze_oscillator
+from .momentum.twiggs_money_flow import twiggs_money_flow
 from .momentum.vams_oscillator import vams_oscillator
+from .momentum.velocity_pressure_index import velocity_pressure_index
 from .momentum.void_momentum_zscore import void_momentum_zscore
+from .momentum.vwap_dev_oscillator import vwap_dev_oscillator
 from .momentum.wave_trend import wavetrend
+from .momentum.wavetrend_oscillator import wavetrend_oscillator
 from .momentum.weis_wave_candle import weis_wave_candle
+from .momentum.zeiierman_range_oscillator import zeiierman_range_oscillator
 
 # Trend tools
 from .trend.median_kijun_sen import median_kijun_sen
@@ -149,6 +158,7 @@ from .trend.pure_price_zone_flow import pure_price_zone_flow
 from .trend.continuation_index import continuation_index
 from .trend.kama_trend_flip import kama_trend_flip
 
+
 # Mean Reversion tools
 from .mean_reversion.quantum_dip_hunter import quantum_dip_hunter
 
@@ -156,6 +166,7 @@ from .mean_reversion.quantum_dip_hunter import quantum_dip_hunter
 from .utils.anchored_synthetic_data_generator import generate_anchored_synthetic_prices
 from .utils.fetch_ohlcv_data import fetch_ohlcv_data
 from .utils.telegram import send_telegram_message
+from .utils.auto_search import select_features, df_columns_tolist
 
 # Machine Learning
 from .ml.ml_core import euclidean_distance, manhattan_distance, minkowski_distance, cosine_distance, kl_divergence, js_divergence
@@ -163,3 +174,5 @@ from .ml.ml_core import mahalanobis_distance, lorentzian_distance, sigmoid, tanh
 from .ml.ml_core import huber_loss, binary_crossentropy, categorical_crossentropy, hinge_loss, minmax_scaling, l2_normalize
 from .ml.ml_core import log_scale, linear_kernel, polynomial_kernel, rbf_kernel, laplacian_kernel, sigmoid_kernel, l1_regularization
 from .ml.ml_core import l2_regularization, soft_threshold, dropout
+from .ml.scaler import Standardize
+from .ml.cluster import fit_predict_KMeans
