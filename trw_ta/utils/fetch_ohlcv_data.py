@@ -2,6 +2,7 @@ import ccxt
 import pandas as pd
 from datetime import datetime
 from trw_ta import register_outputs
+import time
 
 @register_outputs('DataFrame')
 def fetch_ohlcv_data(
@@ -82,4 +83,68 @@ def fetch_ohlcv_data(
     df.set_index('time', inplace=True)
 
     # --- Return formatted DataFrame ---
-    return df[['open', 'high', 'low', 'close', 'volume']]
+    return df[['open', 'high', 'low', 'close', 'volume']][start_date:end_date]
+
+def fetch_ohlcv_data_robust(symbol: str, start_date: str, end_date: str, timeframe: str = '1d', exchange_name: str = 'binance') -> pd.DataFrame:
+    try:
+        exchange_class = getattr(ccxt, exchange_name)
+        exchange = exchange_class({
+            'enableRateLimit': True,  # Essential for loops
+            'options': {'defaultType': 'spot'} 
+        })
+    except AttributeError:
+        raise ValueError(f"Exchange '{exchange_name}' not supported.")
+
+    # --- Convert dates to millisecond timestamps ---
+    since = int(datetime.strptime(start_date, '%Y-%m-%d').timestamp() * 1000)
+    end_timestamp = int(datetime.strptime(end_date, '%Y-%m-%d').timestamp() * 1000)
+
+    all_ohlcv = []
+
+    while since < end_timestamp:
+        try:
+            # Fetch data
+            data = exchange.fetch_ohlcv(symbol, timeframe, since, limit=1000)
+            
+            if not data:
+                print(f"No more data available for {symbol}.")
+                break
+
+            all_ohlcv.extend(data)
+            
+            # Update 'since' to the timestamp of the last candle + 1ms
+            last_ts = data[-1][0]
+            
+            # Safety: If since isn't advancing, break to avoid infinite loop
+            if last_ts <= since:
+                break
+                
+            since = last_ts + 1
+
+            # --- Explicit Sleep ---
+            # exchange.rateLimit is the minimum time between requests (e.g., 50-100ms)
+            # We use it here to ensure we don't hit the "IP Ban" threshold
+            exchange.sleep(exchange.rateLimit*2)
+
+        except ccxt.NetworkError as e:
+            print(f"Network error: {e}. Sleeping for 5 seconds before retry...")
+            time.sleep(5)
+        except ccxt.ExchangeError as e:
+            print(f"Exchange error: {e}. Stopping fetch.")
+            break
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            break
+
+    if not all_ohlcv:
+        raise ValueError(f"No data retrieved for {symbol} between {start_date} and {end_date}.")
+
+    # --- Formatting ---
+    df = pd.DataFrame(all_ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
+    df['time'] = pd.to_datetime(df['timestamp'], unit='ms')
+    df.set_index('time', inplace=True)
+    
+    # Filter out any data that might have exceeded the end_date due to limit=1000
+    df = df[df.index <= pd.to_datetime(end_timestamp, unit='ms')]
+
+    return df[['open', 'high', 'low', 'close', 'volume']][start_date:end_date]
