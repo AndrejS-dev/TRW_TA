@@ -65,11 +65,17 @@ from .statistics.linear_regression_slope import linear_regression_slope
 from .statistics.autocorrelation import autocorrelation
 from .statistics.kaufman_stress_indicator import kaufman_stress_indicator
 
+from .statistics.recursive_ls import recursive_ls
+from .statistics.logistic import to_normalized_logistic_prob
+
 # Volume tools
 from .volume.fisher_volume_transform import fisher_volume_transform
 from .volume.volume_summer import volume_summer
 from .volume.volume_trend_swing_points import volume_trend_swing_points
 from .volume.volume_z_score import volume_z_score
+
+from .volume.volume_pressure import volume_pressure
+from .volume.normalised_volume_oscillator import normalised_volume_oscillator
 
 # Momentum tools
 from .momentum.adaptive_sigmoid_zscore import adaptive_sigmoid_zscore
@@ -116,6 +122,16 @@ from .momentum.wavetrend_oscillator import wavetrend_oscillator
 from .momentum.weis_wave_candle import weis_wave_candle
 from .momentum.zeiierman_range_oscillator import zeiierman_range_oscillator
 
+from .momentum.price_lag_factor import price_lag_factor
+from .momentum.harmonic_resonance_oscillator import harmonic_resonance_oscillator
+from .momentum.adaptive_momentum_oscillator import adaptive_momentum_oscillator
+from .momentum.normalized_resonator import normalized_resonator
+from .momentum.trend_pressure_prism import trend_pressure_prism
+from .momentum.adaptive_volatility_scaled_oscillator import adaptive_volatility_scaled_oscillator
+from .momentum.trend_speed_analyzer import trend_speed_analyzer
+from .momentum.directional_logistic_oscillator import directional_logistic_oscillator
+from .momentum.dynamic_median_momentum_oscillator import dynamic_median_momentum_oscillator
+
 # Trend tools
 from .trend.median_kijun_sen import median_kijun_sen
 from .trend.mad_trend import mad_trend
@@ -158,13 +174,16 @@ from .trend.pure_price_zone_flow import pure_price_zone_flow
 from .trend.continuation_index import continuation_index
 from .trend.kama_trend_flip import kama_trend_flip
 
+from .trend.swing_flow import swing_flow
+from .trend.kalman_hull_kijun import kalman_hull_kijun
+from .trend.polynomial_regression_ma import polynomial_regression_ma
 
 # Mean Reversion tools
 from .mean_reversion.quantum_dip_hunter import quantum_dip_hunter
 
 # Utility functions
 from .utils.anchored_synthetic_data_generator import generate_anchored_synthetic_prices
-from .utils.fetch_ohlcv_data import fetch_ohlcv_data
+from .utils.fetch_ohlcv_data import fetch_ohlcv_data, fetch_ohlcv_data_robust
 from .utils.telegram import send_telegram_message
 from .utils.auto_search import select_features, df_columns_tolist
 
