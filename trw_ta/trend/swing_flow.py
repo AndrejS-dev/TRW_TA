@@ -1,18 +1,55 @@
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+import trw_ta as ta
 from trw_ta import register_outputs
 
 
-@register_outputs('trend')
-def swing_flow(high: pd.Series, low: pd.Series, close: pd.Series, len_period: int = 10, 
-               band_mult: float = 2.0, volatility_length: int = 50) -> pd.DataFrame:
+def _pivothigh(series: pd.Series, left: int, right: int) -> pd.Series:
+    """TradingView ``ta.pivothigh(left, right)`` — value appears on the confirmation bar."""
+    values = series.to_numpy(dtype=float)
+    n = len(values)
+    out = np.full(n, np.nan)
+    for i in range(left + right, n):
+        center = i - right
+        window = values[center - left : center + right + 1]
+        if values[center] == np.nanmax(window):
+            out[i] = values[center]
+    return pd.Series(out, index=series.index)
+
+
+def _pivotlow(series: pd.Series, left: int, right: int) -> pd.Series:
+    """TradingView ``ta.pivotlow(left, right)`` — value appears on the confirmation bar."""
+    values = series.to_numpy(dtype=float)
+    n = len(values)
+    out = np.full(n, np.nan)
+    for i in range(left + right, n):
+        center = i - right
+        window = values[center - left : center + right + 1]
+        if values[center] == np.nanmin(window):
+            out[i] = values[center]
+    return pd.Series(out, index=series.index)
+
+
+@register_outputs("trend")
+def swing_flow(
+    high: pd.Series,
+    low: pd.Series,
+    close: pd.Series,
+    len_period: int = 10,
+    band_mult: float = 2.0,
+    volatility_length: int = 50,
+) -> pd.DataFrame:
     """
-    Swing flow.
-    
+    Swing Flow Indicator [ChartPrime].
+
+    Builds a pivot-informed midline, wraps it with ATR(200)-scaled bands, and
+    flips trend state when price breaks those bands.
+
     Python conversion of the TradingView / Pine Script indicator.
-    
+
     Source: https://www.tradingview.com/script/BtGC9TGm-Swing-Flow-Indicator-ChartPrime/
-    
+
     Parameters
     ----------
     high : pd.Series
@@ -22,63 +59,63 @@ def swing_flow(high: pd.Series, low: pd.Series, close: pd.Series, len_period: in
     close : pd.Series
         Close price series.
     len_period : int, default 10
-        Lookback / smoothing period.
+        Pivot left/right strength and SMA smoothing length.
     band_mult : float, default 2.0
-        Multiplier.
+        Multiplier applied to ATR(200) for band width (Pine ``Bands``, min 1).
     volatility_length : int, default 50
-        Lookback / smoothing period.
-    
+        Unused; kept for backward compatibility. Bands use ATR(200), as in Pine.
+
     Returns
     -------
     pd.DataFrame
-        DataFrame of indicator columns.
+        Column ``trend``: ``1`` bullish, ``-1`` bearish (``NaN`` until the first
+        band cross).
     """
-    vol_proxy = (high.rolling(volatility_length, min_periods=volatility_length//2)
-                 .max() - low.rolling(volatility_length, min_periods=volatility_length//2).min())
-    volatility = vol_proxy * band_mult
+    _ = volatility_length  # deprecated / unused (Pine uses ATR(200))
+    length = int(len_period)
+    mult = float(band_mult)
 
-    window = 2 * len_period + 1
-    is_pivot_high = high == high.rolling(window, min_periods=window//2 + 1).max()
-    is_pivot_low  = low  == low.rolling(window, min_periods=window//2 + 1).min()
+    ph = _pivothigh(high, length, length)
+    pl = _pivotlow(low, length, length)
 
-    swing_high = pd.Series(np.nan, index=high.index, dtype=float)
-    swing_low  = pd.Series(np.nan, index=low.index, dtype=float)
-
-    last_h = high.iloc[0] if not high.empty else np.nan
-    last_l = low.iloc[0]  if not low.empty  else np.nan
+    # Persist last structural anchors. On confirmation Pine assigns current bar
+    # high/low (not the pivot price itself).
+    h1 = pd.Series(np.nan, index=high.index, dtype=float)
+    l1 = pd.Series(np.nan, index=low.index, dtype=float)
+    last_h = np.nan
+    last_l = np.nan
+    ph_vals = ph.to_numpy()
+    pl_vals = pl.to_numpy()
+    high_vals = high.to_numpy(dtype=float)
+    low_vals = low.to_numpy(dtype=float)
 
     for i in range(len(high)):
-        if is_pivot_high.iloc[i] and pd.notna(high.iloc[i]):
-            last_h = high.iloc[i]
-        swing_high.iloc[i] = last_h
+        if not np.isnan(ph_vals[i]):
+            last_h = high_vals[i]
+        if not np.isnan(pl_vals[i]):
+            last_l = low_vals[i]
+        h1.iloc[i] = last_h
+        l1.iloc[i] = last_l
 
-        if is_pivot_low.iloc[i] and pd.notna(low.iloc[i]):
-            last_l = low.iloc[i]
-        swing_low.iloc[i] = last_l
+    atr = ta.atr(high, low, close, 200) * mult
+    mid = ((h1 + l1) / 2).rolling(length, min_periods=1).mean()
+    upper = (mid + atr).rolling(length * 2, min_periods=1).mean()
+    lower = (mid - atr).rolling(length * 2, min_periods=1).mean()
 
-    mid_raw = (swing_high + swing_low) / 2
-    mid = mid_raw.rolling(len_period, min_periods=1).mean()
-    upper_raw = mid + volatility.fillna(0)
-    lower_raw = mid - volatility.fillna(0)
-    upper = upper_raw.rolling(len_period * 2, min_periods=1).mean()
-    lower = lower_raw.rolling(len_period * 2, min_periods=1).mean()
+    # Pine: ta.crossover(high, h) / ta.crossunder(low, l)
+    cross_up = (high > upper) & (high.shift(1) <= upper.shift(1))
+    cross_dn = (low < lower) & (low.shift(1) >= lower.shift(1))
 
-    epsilon = 1e-8
-    cross_up = (close > upper + epsilon) & (close.shift(1) <= upper.shift(1) + epsilon)
-    cross_dn = (close < lower - epsilon) & (close.shift(1) >= lower.shift(1) - epsilon)
+    trend = pd.Series(np.nan, index=close.index, dtype=float)
+    state = np.nan  # matches Pine ``var trend = bool(na)`` until first cross
+    for i in range(len(close)):
+        if bool(cross_up.iloc[i]):
+            state = 1.0
+        elif bool(cross_dn.iloc[i]):
+            state = -1.0
+        trend.iloc[i] = state
 
-    trend = pd.Series(-1, index=close.index, dtype='int8')  # start bearish by default
-
-    for i in range(1, len(close)):
-        if cross_up.iloc[i]:
-            trend.iloc[i] = 1
-        elif cross_dn.iloc[i]:
-            trend.iloc[i] = -1
-        else:
-            trend.iloc[i] = trend.iloc[i-1]
-
-    changed = trend != trend.shift(1).fillna(-1)
-    swing_up_signal   = changed & cross_up & (trend == 1)
-    swing_down_signal = changed & cross_dn & (trend == -1)
-
-    return pd.DataFrame({'trend': trend}).rename_axis(None, axis=1)
+    # After first signal, forward-fill; bars before first cross stay NaN then
+    # become the first established state for a stable series (optional fill).
+    # Keep NaN until first cross so early bars are not falsely bearish.
+    return pd.DataFrame({"trend": trend})
