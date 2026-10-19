@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='trw_ta',
-    version='0.2.5',
+    version='1.0.0',
     packages=find_packages(),
     install_requires=[
         'pandas',
