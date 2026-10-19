@@ -5,7 +5,35 @@ from trw_ta import register_outputs
 
 @register_outputs('line', 'signal')
 def rsi_trail(open_: pd.Series, high: pd.Series, low: pd.Series, close: pd.Series, ma_type: str = "EMA", rsi_lower: float = 40.0, rsi_upper: float = 60.0) -> pd.DataFrame:
-    """https://www.tradingview.com/v/PUGvtsEu/"""
+    """
+    Rsi trail.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/PUGvtsEu/
+    
+    Parameters
+    ----------
+    open_ : pd.Series
+        Open .
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    ma_type : str, default 'EMA'
+        Moving-average type (e.g. SMA, EMA, WMA).
+    rsi_lower : float, default 40.0
+        Rsi lower.
+    rsi_upper : float, default 60.0
+        Rsi upper.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     ohlc4 = (open_ + high + low + close) / 4
     vol = ta.atr2(high, low, close, 27)
 

@@ -11,7 +11,29 @@ def beardy_squeeze(
     close: pd.Series,
     length: int = 20,
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/X6j1hgwQ-AKS-Squeeze-Pro/"""
+    """
+    Beardy squeeze.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/X6j1hgwQ-AKS-Squeeze-Pro/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 20
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     length = int(max(1, length))
 

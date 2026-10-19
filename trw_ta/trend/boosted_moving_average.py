@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('boosted_ma', 'signal')
 def boosted_moving_average(close: pd.Series, length: int = 43, boost_factor: float = 1.5) -> pd.DataFrame:
-    """https://www.tradingview.com/v/eashAKsX/"""
+    """
+    Boosted moving average.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/eashAKsX/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    length : int, default 43
+        Lookback period.
+    boost_factor : float, default 1.5
+        Boost factor.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     ema1 = close.ewm(span=length, adjust=False).mean()
     ema2 = close.ewm(span=length / 2, adjust=False).mean()
 

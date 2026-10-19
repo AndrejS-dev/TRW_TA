@@ -4,6 +4,23 @@ from trw_ta import register_outputs
 @register_outputs('tsi')
 def true_strength_index(series: pd.Series, short_len: int = 13, long_len: int = 25) -> pd.Series:
 
+    """
+    True Strength Index (TSI).
+    
+    Parameters
+    ----------
+    series : pd.Series
+        Input price or value series.
+    short_len : int, default 13
+        Lookback / smoothing period.
+    long_len : int, default 25
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     momentum = series.diff()
     abs_momentum = momentum.abs()
 

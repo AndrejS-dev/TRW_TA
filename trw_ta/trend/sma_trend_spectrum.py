@@ -6,7 +6,31 @@ from trw_ta import register_outputs
 @register_outputs('signal')
 def sma_trend_spectrum(source: pd.Series, from_: int = 2, by_: int = 1,
                             signal_smooth: str = 'SMA', smooth_len: int = 14) -> pd.Series:
-    """https://www.tradingview.com/script/vgnEQWlK-SMA-Trend-Spectrum-InvestorUnknown/"""
+    """
+    Sma trend spectrum.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/vgnEQWlK-SMA-Trend-Spectrum-InvestorUnknown/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    from_ : int, default 2
+        From .
+    by_ : int, default 1
+        By .
+    signal_smooth : str, default 'SMA'
+        Signal smooth.
+    smooth_len : int, default 14
+        Smoothing length.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     n_trends = 31
     trend_values = []
 

@@ -5,7 +5,29 @@ from trw_ta import register_outputs
 
 @register_outputs('signal')
 def volume_trend_swing_points(close: pd.Series, volume: pd.Series, x: int = 30, y: int = 30) -> pd.Series:
-    """https://www.tradingview.com/script/oGM8qJqv-Volume-Trend-Swing-Points-viResearch/"""
+    """
+    Volume trend swing points.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/oGM8qJqv-Volume-Trend-Swing-Points-viResearch/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    x : int, default 30
+        Numeric input.
+    y : int, default 30
+        Numeric input.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     pvt = ta.price_volume_trend(close, volume)
     highest = pvt.rolling(window=x).max()
     lowest = pvt.rolling(window=y).min()

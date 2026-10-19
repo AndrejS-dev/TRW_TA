@@ -10,7 +10,31 @@ def fisher_volume_transform(
     volume_weight: float = 0.7,
     smoothing: int = 3
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/fpDEoqVB-Fisher-Volume-Transform-AlphaNatt/"""
+    """
+    Fisher volume transform.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/fpDEoqVB-Fisher-Volume-Transform-AlphaNatt/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    fisher_period : int, default 10
+        Lookback / smoothing period.
+    volume_weight : float, default 0.7
+        Volume weight.
+    smoothing : int, default 3
+        Smoothing.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     def fisher_transform(src: pd.Series, length: int) -> pd.Series:
         # Calculate highest and lowest over the period
         highest = src.rolling(length).max()

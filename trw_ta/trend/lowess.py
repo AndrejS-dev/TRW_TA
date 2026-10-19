@@ -5,7 +5,25 @@ from trw_ta import register_outputs
 
 @register_outputs('gau_ma', 'osc', 'trend')
 def lowess_trend(close: pd.Series, length: int = 100) -> pd.DataFrame:
-    """https://www.tradingview.com/v/hyeoDyZn/"""
+    """
+    Lowess trend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/hyeoDyZn/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    length : int, default 100
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     gau_ma = trw_ta.gaussian_ma(close, length)
     osc = close - gau_ma
     trend = np.where(gau_ma > gau_ma.shift(1), 1,

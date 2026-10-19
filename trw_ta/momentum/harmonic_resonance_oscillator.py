@@ -4,6 +4,23 @@ from trw_ta import register_outputs
 
 
 def bandpass_filter(src: pd.Series, period: float, bandwidth: float) -> pd.Series:
+    """
+    Bandpass filter.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    period : float
+        Lookback period.
+    bandwidth : float
+        Bandwidth.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     alpha = np.cos(2 * np.pi / period)
     beta = 1.0 / np.cos(4 * np.pi * bandwidth / period)
     gamma = beta - np.sqrt(beta**2 - 1.0)
@@ -21,6 +38,21 @@ def bandpass_filter(src: pd.Series, period: float, bandwidth: float) -> pd.Serie
 
 
 def normalize(src: pd.Series, length: int) -> pd.Series:
+    """
+    Normalize.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    length : int
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     r_max = src.rolling(length, min_periods=1).max()
     r_min = src.rolling(length, min_periods=1).min()
     denom = np.maximum(r_max - r_min, 1e-10)
@@ -30,7 +62,35 @@ def normalize(src: pd.Series, length: int) -> pd.Series:
 @register_outputs('harmonic_resonance')
 def harmonic_resonance_oscillator(close: pd.Series, ref_period: int = 30, short_mult: float = 0.5, med_mult: float = 1.0,
                                   long_mult: float = 2.0, bandwidth: float = 0.1, norm_length: int = 50) -> pd.DataFrame:
-    """https://www.tradingview.com/script/fJ3khqWG-Harmonic-Resonance-Oscillator-LuxAlgo/"""
+    """
+    Harmonic resonance oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/fJ3khqWG-Harmonic-Resonance-Oscillator-LuxAlgo/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    ref_period : int, default 30
+        Lookback / smoothing period.
+    short_mult : float, default 0.5
+        Multiplier.
+    med_mult : float, default 1.0
+        Multiplier.
+    long_mult : float, default 2.0
+        Multiplier.
+    bandwidth : float, default 0.1
+        Bandwidth.
+    norm_length : int, default 50
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     p_short = max(ref_period * short_mult, 2.0)
     p_med   = max(ref_period * med_mult,   2.0)
     p_long  = max(ref_period * long_mult,  2.0)

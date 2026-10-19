@@ -5,7 +5,31 @@ from trw_ta import register_outputs
 @register_outputs('ema', 'upper_band', 'lower_band', 'trend')
 def ema_volatility_channel(close: pd.Series, ema_length: int = 21, smooth: int = 5,
                            volt_length: int = 21, threshold: float = 1.8) -> pd.DataFrame:
-    """https://www.tradingview.com/v/xYgI9yQG/"""
+    """
+    Ema volatility channel.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/xYgI9yQG/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    ema_length : int, default 21
+        Lookback / smoothing period.
+    smooth : int, default 5
+        Smoothing length.
+    volt_length : int, default 21
+        Lookback / smoothing period.
+    threshold : float, default 1.8
+        Threshold.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     ema = close.ewm(span=ema_length, adjust=False).mean()
     volatility = close.diff().abs().ewm(span=volt_length, adjust=False).mean()
 

@@ -4,6 +4,31 @@ from trw_ta import register_outputs
 
 @register_outputs('kvo', 'sig')
 def klinger_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, volume: pd.Series, fast=34, slow=55, signal=13) -> pd.Series:
+    """
+    Klinger Volume Oscillator.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    fast : Any, default 34
+        Fast period.
+    slow : Any, default 55
+        Slow period.
+    signal : Any, default 13
+        Signal period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     hlc3 = (high + low + close) / 3
     sv = volume.where(hlc3.diff() >= 0, -volume)
     kvo = sv.ewm(span=fast, adjust=False).mean() - sv.ewm(span=slow, adjust=False).mean()

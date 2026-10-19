@@ -4,7 +4,33 @@ from trw_ta import register_outputs
 
 @register_outputs('signal')
 def adaptive_price_zone(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 21, threshold: float = 2.0, smooth: int = 5) -> pd.DataFrame:
-    """https://www.tradingview.com/v/3VKZ57Sl/"""
+    """
+    Adaptive price zone.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/3VKZ57Sl/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 21
+        Lookback period.
+    threshold : float, default 2.0
+        Threshold.
+    smooth : int, default 5
+        Smoothing length.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     typical = (high + low + close) / 3
     volatility = typical.diff().abs().ewm(span=length, adjust=False).mean()
     ema_typical = typical.ewm(span=smooth, adjust=False).mean()

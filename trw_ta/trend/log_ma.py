@@ -12,6 +12,29 @@ def logarithmic_moving_average(
     lookback: int = 50
 ) -> pd.DataFrame:
 
+    """
+    Logarithmic moving average.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    method : str, default 'Dynamic'
+        Method.
+    sensitivity : float, default 1.0
+        Sensitivity.
+    lookback : int, default 50
+        Lookback.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     atr = close.rolling(14).apply(lambda x: np.mean(np.abs(np.diff(x))))
     atr_mult = atr * sensitivity
 

@@ -5,6 +5,25 @@ from trw_ta import register_outputs
 
 @register_outputs('ad')
 def accumulation_distribution(high: pd.Series, low: pd.Series, close: pd.Series, volume: pd.Series) -> pd.Series:
+    """
+    Accumulation/Distribution Line.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     cond = ((close == high) & (close == low)) | (high == low)
     money_flow = np.where(cond, 0, ((2 * close - low - high) / (high - low)) * volume)
     return ta.cum(pd.Series(money_flow, index=close.index))  # ensure it's a Series with matching index

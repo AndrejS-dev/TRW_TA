@@ -11,7 +11,45 @@ def mro_oscillator(
     mfi_length: int = 14, composite_smooth: int = 3,
     extreme_level: float = 80.0
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/fEFvlTk2-Mean-Reversion-Oscillator-Alpha-Extract/"""
+    """
+    Mro oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/fEFvlTk2-Mean-Reversion-Oscillator-Alpha-Extract/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    bb_length : int, default 20
+        Lookback / smoothing period.
+    bb_mult : float, default 2.0
+        Multiplier.
+    rsi_length : int, default 14
+        Lookback / smoothing period.
+    stoch_k : int, default 14
+        Stoch k.
+    stoch_d : int, default 3
+        Stoch d.
+    mfi_length : int, default 14
+        Lookback / smoothing period.
+    composite_smooth : int, default 3
+        Composite smooth.
+    extreme_level : float, default 80.0
+        Extreme level.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     # Bollinger %B
     basis = close.rolling(bb_length).mean()
     dev = bb_mult * close.rolling(bb_length).std()

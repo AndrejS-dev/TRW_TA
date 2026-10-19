@@ -5,7 +5,33 @@ from trw_ta import register_outputs
 @register_outputs('kama', 'signal')
 def gaussian_mixture_model(close: pd.Series, training_period: int = 100, n_components: int = 3, momentum_length: int = 14, 
                           learning_rate: float = 0.3, smoothing: int = 3) -> pd.DataFrame:
-    """https://www.tradingview.com/script/Ak2YzGrb-Machine-Learning-Gaussian-Mixture-Model-AlphaNatt/"""
+    """
+    Gaussian mixture model.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/Ak2YzGrb-Machine-Learning-Gaussian-Mixture-Model-AlphaNatt/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    training_period : int, default 100
+        Lookback / smoothing period.
+    n_components : int, default 3
+        N components.
+    momentum_length : int, default 14
+        Lookback / smoothing period.
+    learning_rate : float, default 0.3
+        Learning rate.
+    smoothing : int, default 3
+        Smoothing.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     # Input validation
     if not isinstance(close, pd.Series):
         raise TypeError("Close must be a pandas Series")

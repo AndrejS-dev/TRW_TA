@@ -18,6 +18,41 @@ def quantum_dip_hunter(
     min_dip_score: float = 70.0
 ) -> pd.DataFrame:
     
+    """
+    Quantum dip hunter.
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    volume : pd.Series
+        Volume series.
+    method : str, default 'Dynamic'
+        Method.
+    sensitivity : float, default 1.0
+        Sensitivity.
+    lookback : int, default 50
+        Lookback.
+    dip_depth_pct : float, default 2.0
+        Dip depth pct.
+    trend_period : int, default 200
+        Lookback / smoothing period.
+    trend_strength_threshold : float, default 0.5
+        Trend strength threshold.
+    use_trend_filter : bool, default True
+        Use trend filter.
+    min_dip_score : float, default 70.0
+        Min dip score.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     atr = close.rolling(14).apply(lambda x: np.mean(np.abs(np.diff(x))))
     atr_mult = atr * sensitivity
 

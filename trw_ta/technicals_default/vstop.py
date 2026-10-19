@@ -5,6 +5,29 @@ from trw_ta import register_outputs
 
 @register_outputs('vstop', 'uptrend')
 def vstop(src: pd.Series, high: pd.Series, low: pd.Series, close: pd.Series, length: int = 20, factor: float = 2.0) -> pd.DataFrame:
+    """
+    Volatility Stop.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 20
+        Lookback period.
+    factor : float, default 2.0
+        Factor.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     atr_vals = ta.atr2(high, low, close, length)
     stop = [np.nan] * len(src)
     uptrend = [True] * len(src)

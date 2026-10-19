@@ -2,6 +2,23 @@ import pandas as pd
 from trw_ta import register_outputs
 
 def tsi(series: pd.Series, short_len: int, long_len: int) -> pd.Series:
+    """
+    Tsi.
+    
+    Parameters
+    ----------
+    series : pd.Series
+        Input price or value series.
+    short_len : int
+        Lookback / smoothing period.
+    long_len : int
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     momentum = series.diff()
     abs_momentum = momentum.abs()
 
@@ -16,6 +33,25 @@ def tsi(series: pd.Series, short_len: int, long_len: int) -> pd.Series:
 
 @register_outputs('ergodic', 'signal')
 def smi_ergodic(close: pd.Series, short_len: int = 5, long_len: int = 20, sig_len: int = 5) -> pd.DataFrame:
+    """
+    SMI Ergodic Indicator.
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    short_len : int, default 5
+        Lookback / smoothing period.
+    long_len : int, default 20
+        Lookback / smoothing period.
+    sig_len : int, default 5
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     ergodic = tsi(close, short_len, long_len)
     signal = ergodic.ewm(span=sig_len, adjust=False).mean()
 

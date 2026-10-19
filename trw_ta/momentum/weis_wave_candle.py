@@ -12,7 +12,35 @@ def weis_wave_candle(
     trend_period: int = 4,
     use_shadows: bool = True
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/SwRzdvoL/"""
+    """
+    Weis wave candle.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/SwRzdvoL/
+    
+    Parameters
+    ----------
+    open : pd.Series
+        Open price series.
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    method : str, default 'LazyBear Style'
+        Method.
+    trend_period : int, default 4
+        Lookback / smoothing period.
+    use_shadows : bool, default True
+        Use shadows.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     candle_size = np.abs(close - open) + (high - low) * 0.5 if use_shadows else np.abs(close - open)
 
     wave = pd.Series(np.nan, index=close.index)

@@ -5,7 +5,31 @@ from trw_ta import register_outputs
 @register_outputs('stc', 'trend')
 def schaff_trend_cycle(close: pd.Series, length: int = 12, fast_len: int = 26, slow_len: int = 50,
                        smoothing: float = 0.5) -> pd.DataFrame:
-    """https://www.tradingview.com/v/WhRRThMI/"""
+    """
+    Schaff trend cycle.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/WhRRThMI/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    length : int, default 12
+        Lookback period.
+    fast_len : int, default 26
+        Lookback / smoothing period.
+    slow_len : int, default 50
+        Lookback / smoothing period.
+    smoothing : float, default 0.5
+        Smoothing.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     def ema(series, length):
         return series.ewm(span=length, adjust=False).mean()

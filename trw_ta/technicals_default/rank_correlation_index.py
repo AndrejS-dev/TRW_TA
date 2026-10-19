@@ -4,6 +4,21 @@ from trw_ta import register_outputs
 
 @register_outputs('rci')
 def rank_correlation_index(src: pd.Series, length: int = 10) -> pd.Series:
+    """
+    Rank Correlation Index.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    length : int, default 10
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     rci_vals = []
 
     for i in range(len(src)):

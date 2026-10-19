@@ -4,7 +4,35 @@ from trw_ta import register_outputs
 
 @register_outputs('osc', 'signal')
 def firefly_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, lookback_length: int = 10, signal_smoothing: int = 3, double_smooth: bool = False, use_zlema: bool = False) -> pd.DataFrame:
-    """https://www.tradingview.com/script/pgvRuoUi-Firefly-Oscillator-LazyBear/"""
+    """
+    Firefly oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/pgvRuoUi-Firefly-Oscillator-LazyBear/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    lookback_length : int, default 10
+        Lookback / smoothing period.
+    signal_smoothing : int, default 3
+        Signal smoothing.
+    double_smooth : bool, default False
+        Double smooth.
+    use_zlema : bool, default False
+        Use zlema.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     def calc_zlema(src, length):
         ema1 = src.ewm(span=length, adjust=False).mean()
         ema2 = ema1.ewm(span=length, adjust=False).mean()

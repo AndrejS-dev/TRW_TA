@@ -4,7 +4,25 @@ from trw_ta import register_outputs
 
 @register_outputs('CG', 'Trigger')
 def ehlers_center_of_gravity(source: pd.Series, length: int = 10) -> pd.DataFrame:
-    """https://www.tradingview.com/script/gFkGeFH4-Ehlers-Center-of-Gravity-Oscillator-LazyBear/"""
+    """
+    Ehlers center of gravity.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/gFkGeFH4-Ehlers-Center-of-Gravity-Oscillator-LazyBear/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    length : int, default 10
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     if not isinstance(source, pd.Series):
         raise TypeError("Source must be a pandas Series")
     if not isinstance(length, int) or length < 1:

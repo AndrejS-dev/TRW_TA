@@ -10,7 +10,43 @@ def oscillator_matrix(
     mf_length: int = 14, mf_smooth: int = 3, mf_multiplier: float = 2.0,
     hw_fast: int = 12, hw_slow: int = 26, hw_signal: int = 9, hw_smooth: int = 3
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/gfUptPZd-Oscillator-Matrix-Alpha-Extract/"""
+    """
+    Oscillator matrix.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/gfUptPZd-Oscillator-Matrix-Alpha-Extract/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    mf_length : int, default 14
+        Lookback / smoothing period.
+    mf_smooth : int, default 3
+        Mf smooth.
+    mf_multiplier : float, default 2.0
+        Multiplier.
+    hw_fast : int, default 12
+        Hw fast.
+    hw_slow : int, default 26
+        Hw slow.
+    hw_signal : int, default 9
+        Hw signal.
+    hw_smooth : int, default 3
+        Hw smooth.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     # --- Money Flow Oscillator ---
     typical_price = (high + low + close) / 3

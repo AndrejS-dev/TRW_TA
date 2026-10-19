@@ -6,7 +6,37 @@ from trw_ta import register_outputs
 @register_outputs('signal')
 def alma_vii(high: pd.Series, low: pd.Series, close: pd.Series, entry_src: pd.Series,
     alma_length: int = 40, hma_length: int = 20, offset: float = 0.7, sigma: float = 4.0) -> pd.Series:
-    """https://www.tradingview.com/script/YIm6QQ4I-vii-Alma/"""
+    """
+    Alma vii.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/YIm6QQ4I-vii-Alma/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    entry_src : pd.Series
+        Entry/source series for signal logic.
+    alma_length : int, default 40
+        Lookback / smoothing period.
+    hma_length : int, default 20
+        Lookback / smoothing period.
+    offset : float, default 0.7
+        Offset parameter.
+    sigma : float, default 4.0
+        Sigma / smoothing parameter.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     alma_line = ta.alma(close, alma_length, offset, sigma)
 
     e1 = ta.hma(low, hma_length)

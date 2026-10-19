@@ -4,7 +4,31 @@ from trw_ta import register_outputs
 
 @register_outputs('fast_osc', 'slow_osc')
 def hurst_cycle_channel_oscillator(src: pd.Series, short_cycle_length: int = 10, medium_cycle_length: int = 30, short_cycle_multiplier: float = 1.0, medium_cycle_multiplier: float = 3.0) -> pd.DataFrame:
-    """https://www.tradingview.com/script/3yAQDB3h-Cycle-Channel-Oscillator-LazyBear/"""
+    """
+    Hurst cycle channel oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/3yAQDB3h-Cycle-Channel-Oscillator-LazyBear/
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    short_cycle_length : int, default 10
+        Lookback / smoothing period.
+    medium_cycle_length : int, default 30
+        Lookback / smoothing period.
+    short_cycle_multiplier : float, default 1.0
+        Multiplier.
+    medium_cycle_multiplier : float, default 3.0
+        Multiplier.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     scl = short_cycle_length // 2
     mcl = medium_cycle_length // 2
     

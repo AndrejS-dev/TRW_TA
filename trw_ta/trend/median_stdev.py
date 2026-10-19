@@ -6,7 +6,37 @@ from trw_ta import register_outputs
 @register_outputs('signal')
 def median_stdev(high: pd.Series, low: pd.Series, close: pd.Series, len_dema: int = 7,
     median_len: int = 61, atr_len: int = 6, atr_mul: float = 0.6, stdev_len: int = 27) -> pd.Series:
-    """https://www.tradingview.com/script/ywl57T7A-Median-Standard-Deviation-viResearch/"""
+    """
+    Median stdev.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/ywl57T7A-Median-Standard-Deviation-viResearch/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    len_dema : int, default 7
+        Len dema.
+    median_len : int, default 61
+        Lookback / smoothing period.
+    atr_len : int, default 6
+        Lookback / smoothing period.
+    atr_mul : float, default 0.6
+        Atr mul.
+    stdev_len : int, default 27
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
 
     dema = ta.dema(close, length=len_dema)
 

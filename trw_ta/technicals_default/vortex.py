@@ -5,6 +5,25 @@ from trw_ta import register_outputs
 
 @register_outputs('vip', 'vim')
 def vortex(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 14) -> pd.DataFrame:
+    """
+    Vortex Indicator.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 14
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     vm_plus = (high - low.shift(1)).abs()
     vm_minus = (low - high.shift(1)).abs()
     tr = ta.atr2(high, low, close, 1)

@@ -6,7 +6,35 @@ from trw_ta import register_outputs
 def chandelier_exit_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 22,
                                 multiplier: float = 3.0, norm_smooth: int = 3,
                                 mode: str = 'regular') -> pd.Series:
-    """https://www.tradingview.com/v/4D43DcbR/"""
+    """
+    Chandelier exit oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/4D43DcbR/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 22
+        Lookback period.
+    multiplier : float, default 3.0
+        Multiplier.
+    norm_smooth : int, default 3
+        Norm smooth.
+    mode : str, default 'regular'
+        Mode.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     tr = pd.concat([
         high - low,
         (high - close.shift(1)).abs(),

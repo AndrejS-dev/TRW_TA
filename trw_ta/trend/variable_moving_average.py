@@ -4,7 +4,25 @@ from trw_ta import register_outputs
 
 @register_outputs('vma','signal')
 def variable_moving_average(close: pd.Series, length: int = 6) -> pd.DataFrame:
-    """https://www.tradingview.com/v/6Ix0E5Yr/"""
+    """
+    Variable moving average.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/6Ix0E5Yr/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    length : int, default 6
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     k = 1.0 / length
 
     pdm = np.maximum(close - close.shift(1), 0)

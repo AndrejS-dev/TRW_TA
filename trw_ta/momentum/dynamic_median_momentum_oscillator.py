@@ -6,7 +6,35 @@ from trw_ta import register_outputs
 @register_outputs('mcd', 'smooth_mcd', 'sig')
 def dynamic_median_momentum_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, basis_length: int = 21,
     smooth_length: int = 21, signal_length: int = 14, standardize: bool = True) -> pd.DataFrame:
-    """https://www.tradingview.com/script/EDgeowAw-Dynamic-Median-Momentum-Oscillator-AlgoAlpha/"""
+    """
+    Dynamic median momentum oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/EDgeowAw-Dynamic-Median-Momentum-Oscillator-AlgoAlpha/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    basis_length : int, default 21
+        Lookback / smoothing period.
+    smooth_length : int, default 21
+        Lookback / smoothing period.
+    signal_length : int, default 14
+        Lookback / smoothing period.
+    standardize : bool, default True
+        Standardize.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     hlc3 = (high + low + close) / 3
     basis = hlc3.rolling(basis_length, min_periods=1).median()
     range_basis = (high - low).ewm(span=basis_length, adjust=False, min_periods=1).mean()

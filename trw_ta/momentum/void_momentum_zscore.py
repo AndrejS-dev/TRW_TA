@@ -6,6 +6,25 @@ from trw_ta import register_outputs
 @register_outputs('z_score', 'z_score_ema')
 def void_momentum_zscore(source: pd.Series, a: int = 10, b: int = 30, regime: str = "STH") -> pd.DataFrame:
 
+    """
+    Void momentum zscore.
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    a : int, default 10
+        Numeric input.
+    b : int, default 30
+        Numeric input.
+    regime : str, default 'STH'
+        Regime.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     def momentum_sum_fl(src, a, b):
         mom = pd.Series(index=src.index, dtype=float)
         for i in range(a, b + 1):

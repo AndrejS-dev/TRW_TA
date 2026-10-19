@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('oscillator', 'signal')
 def hurst_momentum_oscillator(close: pd.Series, hurst_length: int = 20, momentum_length: int = 14, smoothing: int = 3) -> pd.DataFrame:
-    """https://www.tradingview.com/script/Sc9Ls8Kx-Hurst-Momentum-Oscillator-AlphaNatt/"""
+    """
+    Hurst momentum oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/Sc9Ls8Kx-Hurst-Momentum-Oscillator-AlphaNatt/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    hurst_length : int, default 20
+        Lookback / smoothing period.
+    momentum_length : int, default 14
+        Lookback / smoothing period.
+    smoothing : int, default 3
+        Smoothing.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     # Input validation
     if not isinstance(close, pd.Series):
         raise TypeError("Close must be a pandas Series")

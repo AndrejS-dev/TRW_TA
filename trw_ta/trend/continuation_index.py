@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('cl')
 def continuation_index(src: pd.Series, gamma: float = 0.8, order: int = 8, length: int = 40) -> pd.DataFrame:
-    """https://www.tradingview.com/script/5ZrOut79-TASC-2025-09-The-Continuation-Index/"""
+    """
+    Continuation index.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/5ZrOut79-TASC-2025-09-The-Continuation-Index/
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    gamma : float, default 0.8
+        Gamma.
+    order : int, default 8
+        Order.
+    length : int, default 40
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     if not isinstance(src, pd.Series):
         raise TypeError("Source must be a pandas Series")
     if src.isna().any():

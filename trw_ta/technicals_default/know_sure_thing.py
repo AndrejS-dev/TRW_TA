@@ -10,6 +10,37 @@ def know_sure_thing(close: pd.Series,
                   roclen4: int = 30, smalen4: int = 15,
                   siglen: int = 9) -> pd.Series:
     
+    """
+    Know Sure Thing (KST).
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    roclen1 : int, default 10
+        Roclen1.
+    smalen1 : int, default 10
+        Smalen1.
+    roclen2 : int, default 15
+        Roclen2.
+    smalen2 : int, default 10
+        Smalen2.
+    roclen3 : int, default 20
+        Roclen3.
+    smalen3 : int, default 10
+        Smalen3.
+    roclen4 : int, default 30
+        Roclen4.
+    smalen4 : int, default 15
+        Smalen4.
+    siglen : int, default 9
+        Siglen.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     def smaroc(roclen, smalen):
         roc = ta.rate_of_change(close, roclen)
         return roc.rolling(window=smalen).mean()

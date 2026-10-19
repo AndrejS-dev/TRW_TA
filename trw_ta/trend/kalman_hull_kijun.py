@@ -3,6 +3,23 @@ import numpy as np
 from trw_ta import register_outputs
 
 def kalman_filter_1d(src: pd.Series, measurement_noise: float = 3.0, process_noise: float = 0.01) -> pd.Series:
+    """
+    Kalman filter 1d.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    measurement_noise : float, default 3.0
+        Measurement noise.
+    process_noise : float, default 0.01
+        Process noise.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     n = len(src)
     if n == 0:
         return pd.Series(dtype=float)
@@ -35,6 +52,23 @@ def kalman_filter_1d(src: pd.Series, measurement_noise: float = 3.0, process_noi
     return pd.Series(estimate, index=src.index)
 
 def kalman_hull_ma(src: pd.Series, length: float = 3.0, process_noise: float = 0.01) -> pd.Series:
+    """
+    Kalman hull ma.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    length : float, default 3.0
+        Lookback period.
+    process_noise : float, default 0.01
+        Process noise.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     if length < 1:
         return src
 
@@ -49,6 +83,21 @@ def kalman_hull_ma(src: pd.Series, length: float = 3.0, process_noise: float = 0
     return khma
 
 def donchian_midpoint(src: pd.Series, period: int = 26) -> pd.Series:
+    """
+    Donchian midpoint.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    period : int, default 26
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     if period < 1:
         return src
 
@@ -59,7 +108,29 @@ def donchian_midpoint(src: pd.Series, period: int = 26) -> pd.Series:
 @register_outputs('kijun', 'trend')
 def kalman_hull_kijun(source: pd.Series, base_period: int = 26, measurement_noise: float = 3.0,
     process_noise: float = 0.01) -> pd.DataFrame:
-    """https://www.tradingview.com/script/0E5xrn6O-Kalman-Hull-Kijun-BackQuant/"""
+    """
+    Kalman hull kijun.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/0E5xrn6O-Kalman-Hull-Kijun-BackQuant/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    base_period : int, default 26
+        Lookback / smoothing period.
+    measurement_noise : float, default 3.0
+        Measurement noise.
+    process_noise : float, default 0.01
+        Process noise.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     khma = kalman_hull_ma(source, length=measurement_noise, process_noise=process_noise)
     kijun = donchian_midpoint(khma, period=base_period)
 

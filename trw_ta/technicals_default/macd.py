@@ -4,6 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('macd', 'signal', 'hist')
 def macd(source: pd.Series, fast_len: int = 12, slow_len: int = 26, sig_len: int = 9, oscillator_ma_type: str = "EMA", signal_ma_type: str = "EMA") -> pd.DataFrame:
+    """
+    Moving Average Convergence Divergence (MACD).
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    fast_len : int, default 12
+        Lookback / smoothing period.
+    slow_len : int, default 26
+        Lookback / smoothing period.
+    sig_len : int, default 9
+        Lookback / smoothing period.
+    oscillator_ma_type : str, default 'EMA'
+        Oscillator ma type.
+    signal_ma_type : str, default 'EMA'
+        Signal ma type.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     if slow_len <= fast_len:
         raise ValueError("slow_len must be greater than fast_len")
     

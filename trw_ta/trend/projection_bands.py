@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('upb', 'lpd', 'mid')
 def projection_bands(high: pd.Series, low: pd.Series, length: int = 14) -> pd.DataFrame:
-    """https://www.tradingview.com/script/yAKD6bQA-3-projection-Indicators-PBands-PO-PB/"""
+    """
+    Projection bands.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/yAKD6bQA-3-projection-Indicators-PBands-PO-PB/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    length : int, default 14
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     cum_idx = np.arange(1, len(high) + 1)
 
     sum_c = pd.Series(cum_idx).rolling(length).sum()

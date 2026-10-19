@@ -4,7 +4,23 @@ from trw_ta import register_outputs
 
 @register_outputs('RMO')
 def rmo(close: pd.Series) -> pd.Series:
-    """https://www.tradingview.com/script/efHJsedw-Indicator-Rahul-Mohindar-Oscillator-RMO/"""
+    """
+    Rmo.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/efHJsedw-Indicator-Rahul-Mohindar-Oscillator-RMO/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     def sma2(x):
         return trw_ta.sma(x, 2)
 

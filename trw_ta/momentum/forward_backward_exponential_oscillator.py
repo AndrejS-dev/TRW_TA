@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('forward_backward', 'backward', 'histogram')
 def forward_backward_exponential_oscillator(src: pd.Series, length: int = 20, smooth: int = 10) -> pd.DataFrame:
-    """https://www.tradingview.com/script/hMctOIlX-Forward-Backward-Exponential-Oscillator-LuxAlgo/"""
+    """
+    Forward backward exponential oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/hMctOIlX-Forward-Backward-Exponential-Oscillator-LuxAlgo/
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    length : int, default 20
+        Lookback period.
+    smooth : int, default 10
+        Smoothing length.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     def backward_ema():
         ema1 = src.ewm(span=smooth, adjust=False).mean()
         ema2 = ema1.ewm(span=smooth, adjust=False).mean()

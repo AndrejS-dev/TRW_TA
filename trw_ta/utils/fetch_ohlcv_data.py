@@ -86,6 +86,31 @@ def fetch_ohlcv_data(
     return df[['open', 'high', 'low', 'close', 'volume']][start_date:end_date]
 
 def fetch_ohlcv_data_robust(symbol: str, start_date: str, end_date: str, timeframe: str = '1d', exchange_name: str = 'binance') -> pd.DataFrame:
+    """
+    Fetch historical OHLCV data with rate-limit handling and retry-friendly pagination.
+
+    More resilient than :func:`fetch_ohlcv_data` for long date ranges or strict
+    exchange API limits.
+
+    Parameters
+    ----------
+    symbol : str
+        Exchange symbol (e.g. BTC/USDT).
+    start_date : str
+        Start date (YYYY-MM-DD).
+    end_date : str
+        End date (YYYY-MM-DD).
+    timeframe : str, default '1d'
+        Candle timeframe (e.g. 1h, 1d).
+    exchange_name : str, default 'binance'
+        CCXT exchange id.
+
+    Returns
+    -------
+    pd.DataFrame
+        OHLCV columns ``open``, ``high``, ``low``, ``close``, ``volume`` with a
+        datetime index.
+    """
     try:
         exchange_class = getattr(ccxt, exchange_name)
         exchange = exchange_class({

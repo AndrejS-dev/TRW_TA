@@ -5,7 +5,35 @@ from trw_ta import register_outputs
 @register_outputs('score', 'signal', 'trend_state')
 def quartile_for_loop(close: pd.Series, q_length: int = 14, sl: int = 5, el: int = 55, thr_up: float = 35.0, 
                       thr_down: float = -5.0, type_sig: bool = False) -> pd.DataFrame:
-    """https://www.tradingview.com/script/6OezfUK6-Quartile-For-Loop-SeerQuant/"""
+    """
+    Quartile for loop.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/6OezfUK6-Quartile-For-Loop-SeerQuant/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    q_length : int, default 14
+        Lookback / smoothing period.
+    sl : int, default 5
+        Sl.
+    el : int, default 55
+        El.
+    thr_up : float, default 35.0
+        Thr up.
+    thr_down : float, default -5.0
+        Thr down.
+    type_sig : bool, default False
+        Type sig.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     # Weighted quartile function
     def f_quartile(src: pd.Series, length: int) -> pd.Series:
         q1 = src.rolling(length).quantile(0.25)

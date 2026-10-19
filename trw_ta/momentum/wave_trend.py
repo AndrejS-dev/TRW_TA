@@ -3,7 +3,33 @@ from trw_ta import register_outputs
 
 @register_outputs('wt1', 'wt2', 'hist')
 def wavetrend(high: pd.Series, low: pd.Series, close: pd.Series, channel_len: int = 10, avg_len: int = 21, smooth_len: int = 4) -> pd.DataFrame:
-    """https://www.tradingview.com/v/jFQn4jYZ/"""
+    """
+    WaveTrend Oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/jFQn4jYZ/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    channel_len : int, default 10
+        Channel length.
+    avg_len : int, default 21
+        Averaging length.
+    smooth_len : int, default 4
+        Smoothing length.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     ap = (high + low + close) / 3
     esa = ap.ewm(span=channel_len, adjust=False).mean()
     d = (ap - esa).abs().ewm(span=channel_len, adjust=False).mean()

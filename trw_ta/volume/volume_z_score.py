@@ -5,7 +5,37 @@ from trw_ta import register_outputs
 @register_outputs('zs', 'signal')
 def volume_z_score(volume: pd.Series, lookback: int = 50, use_log: bool = False, sma_type: str = "SMA", 
                   smoothing: int = 1, z_thresh_high: float = 2.0, z_thresh_low: float = -2.0, eps: float = 1e-9) -> pd.DataFrame:
-    """https://www.tradingview.com/script/wh1wA9zV-Normalized-Volume-Z-Score/"""
+    """
+    Volume z score.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/wh1wA9zV-Normalized-Volume-Z-Score/
+    
+    Parameters
+    ----------
+    volume : pd.Series
+        Volume series.
+    lookback : int, default 50
+        Lookback.
+    use_log : bool, default False
+        Use log.
+    sma_type : str, default 'SMA'
+        Sma type.
+    smoothing : int, default 1
+        Smoothing.
+    z_thresh_high : float, default 2.0
+        Z thresh high.
+    z_thresh_low : float, default -2.0
+        Z thresh low.
+    eps : float, default 1e-09
+        Eps.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     # Input validation
     if not isinstance(volume, pd.Series):
         raise TypeError("Volume must be a pandas Series")

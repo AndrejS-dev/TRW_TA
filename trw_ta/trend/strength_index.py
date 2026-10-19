@@ -4,6 +4,21 @@ from trw_ta import register_outputs
 
 @register_outputs('strength index')
 def strength_index(series: pd.Series, length: int) -> pd.Series:
+    """
+    Strength index.
+    
+    Parameters
+    ----------
+    series : pd.Series
+        Input price or value series.
+    length : int
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     def corr_with_time(x):
         x = np.array(x)
         t = np.arange(len(x))

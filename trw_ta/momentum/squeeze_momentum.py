@@ -5,7 +5,37 @@ from trw_ta import register_outputs
 
 @register_outputs('val')
 def squeeze_momentum(high: pd.Series, low: pd.Series, close: pd.Series, bb_length: int = 20, bb_mult: float = 2.0, kc_length: int = 20, kc_mult: float = 1.5, use_tr: bool = True) -> pd.DataFrame:
-    """https://www.tradingview.com/v/nqQ1DT5a/"""
+    """
+    Squeeze momentum.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/nqQ1DT5a/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    bb_length : int, default 20
+        Lookback / smoothing period.
+    bb_mult : float, default 2.0
+        Multiplier.
+    kc_length : int, default 20
+        Lookback / smoothing period.
+    kc_mult : float, default 1.5
+        Multiplier.
+    use_tr : bool, default True
+        Use tr.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     source = close
     basis = close.rolling(window=bb_length).mean()
     dev = close.rolling(window=bb_length).std() * bb_mult

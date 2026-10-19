@@ -3,11 +3,45 @@ import pandas as pd
 from trw_ta import register_outputs
 
 def cauchy_pdf(offset: int, gamma: float) -> float:
+    """
+    Cauchy pdf.
+    
+    Parameters
+    ----------
+    offset : int
+        Offset parameter.
+    gamma : float
+        Gamma.
+    
+    Returns
+    -------
+    float
+        Scalar result.
+    """
     numerator = gamma ** 2
     denominator = offset ** 2 + gamma ** 2
     return (1 / (np.pi * gamma)) * (numerator / denominator)
 
 def calc_atr(high: pd.Series, low: pd.Series, close: pd.Series, period: int) -> pd.Series:
+    """
+    Calc atr.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    period : int
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     high = pd.Series(high)
     low = pd.Series(low)
     close = pd.Series(close)
@@ -18,6 +52,20 @@ def calc_atr(high: pd.Series, low: pd.Series, close: pd.Series, period: int) -> 
     return tr.rolling(window=period).mean()
 
 def supertrend(cwm_avg, src, atr, factor):
+    """
+    Supertrend.
+    
+    Parameters
+    ----------
+    cwm_avg : Any
+        Cwm avg.
+    src : Any
+        Input price or value series.
+    atr : Any
+        Atr.
+    factor : Any
+        Factor.
+    """
     n = len(src)
     upper_band = cwm_avg + factor * atr
     lower_band = cwm_avg - factor * atr
@@ -71,7 +119,37 @@ def supertrend(cwm_avg, src, atr, factor):
 @register_outputs('cauchyTrend', 'trend', 'cwm_avg')
 def cauchy_trend(high: pd.Series, low: pd.Series, close: pd.Series, input_src: pd.Series, length: int = 28,
                              gamma: float = 0.5, atr_len: int = 14, atr_mult: float = 2.0) -> pd.DataFrame:
-    """https://www.tradingview.com/script/XuPnhy3w-CauchyTrend-InvestorUnknown/"""
+    """
+    Cauchy trend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/XuPnhy3w-CauchyTrend-InvestorUnknown/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    input_src : pd.Series
+        Input src.
+    length : int, default 28
+        Lookback period.
+    gamma : float, default 0.5
+        Gamma.
+    atr_len : int, default 14
+        Lookback / smoothing period.
+    atr_mult : float, default 2.0
+        Multiplier.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     df_len = len(close)
 
     # Calculate Cauchy-weighted average

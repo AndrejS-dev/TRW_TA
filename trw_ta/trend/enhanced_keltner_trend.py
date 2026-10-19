@@ -7,7 +7,37 @@ from trw_ta import register_outputs
 def enhanced_keltner_trend(high: pd.Series, low: pd.Series, close: pd.Series,
                            ma_len: int = 11, atr_len: int = 9, atr_mult: float = 0.7,
                            use_atr: bool = True, ma_type: str = "EMA") -> pd.DataFrame:
-    """https://www.tradingview.com/v/Brk1dlzM/"""
+    """
+    Enhanced keltner trend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/Brk1dlzM/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    ma_len : int, default 11
+        Lookback / smoothing period.
+    atr_len : int, default 9
+        Lookback / smoothing period.
+    atr_mult : float, default 0.7
+        Multiplier.
+    use_atr : bool, default True
+        Use atr.
+    ma_type : str, default 'EMA'
+        Moving-average type (e.g. SMA, EMA, WMA).
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     price_basis = ta.ma(close, ma_len, ma_type)
 
     if use_atr:

@@ -15,7 +15,37 @@ def fractal_strength_oscillator(
     ma_type: str = "EMA",
     ma_length: int = 14,
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/4pd82lq7-Fractal-Strength-Oscillator/"""
+    """
+    Fractal strength oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/4pd82lq7-Fractal-Strength-Oscillator/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    volume : pd.Series | None, default None
+        Volume series.
+    N : int, default 20
+        N.
+    FDI_threshold : float, default 1.45
+        Fdi threshold.
+    rsi_length : int, default 14
+        Lookback / smoothing period.
+    use_smoothing : bool, default False
+        Use smoothing.
+    ma_type : str, default 'EMA'
+        Moving-average type (e.g. SMA, EMA, WMA).
+    ma_length : int, default 14
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     if not isinstance(close, pd.Series):
         raise TypeError("close must be a pandas Series")

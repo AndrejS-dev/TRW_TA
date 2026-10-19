@@ -7,7 +7,39 @@ from trw_ta import register_outputs
 def dynamic_score_psar(high: pd.Series, low: pd.Series, close: pd.Series,
                        psar_start: float = 0.02, psar_increment: float = 0.0005, psar_max: float = 0.2,
                        window_len: int = 60, uptrend_threshold: int = 30, downtrend_threshold: int = -20) -> pd.DataFrame:
-    """https://www.tradingview.com/v/KAWg6T4j/"""
+    """
+    Dynamic score psar.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/KAWg6T4j/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    psar_start : float, default 0.02
+        Psar start.
+    psar_increment : float, default 0.0005
+        Psar increment.
+    psar_max : float, default 0.2
+        Psar max.
+    window_len : int, default 60
+        Lookback / smoothing period.
+    uptrend_threshold : int, default 30
+        Uptrend threshold.
+    downtrend_threshold : int, default -20
+        Downtrend threshold.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     psar_out = ta.sar(high, low, close, psar_start, psar_increment, psar_max)
     psar = close - psar_out
     ema_range = (high - low).ewm(span=21, adjust=False).mean()

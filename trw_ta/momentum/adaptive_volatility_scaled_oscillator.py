@@ -6,6 +6,27 @@ from trw_ta import register_outputs
 def yang_zhang_volatility(open_: pd.Series, high: pd.Series, low: pd.Series,
     close: pd.Series, period: int = 14) -> pd.Series:
 
+    """
+    Yang zhang volatility.
+    
+    Parameters
+    ----------
+    open_ : pd.Series
+        Open .
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    period : int, default 14
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     r_oo = np.log(open_ / close.shift(1)).fillna(0)
     r_oc = np.log(close / open_).fillna(0)
     r_hl = np.log(high / low).fillna(0)
@@ -23,6 +44,21 @@ def yang_zhang_volatility(open_: pd.Series, high: pd.Series, low: pd.Series,
 
 
 def adaptive_ema(src: pd.Series, base_length: int = 5) -> pd.Series:
+    """
+    Adaptive ema.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    base_length : int, default 5
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     alpha = 2.0 / (base_length + 1.0)
     return src.ewm(alpha=alpha, adjust=False, min_periods=1).mean()
 
@@ -30,7 +66,41 @@ def adaptive_ema(src: pd.Series, base_length: int = 5) -> pd.Series:
 @register_outputs('zscore', 'adaptive')
 def adaptive_volatility_scaled_oscillator(src: pd.Series, open_: pd.Series, high: pd.Series, low: pd.Series, volume: pd.Series,
     metric_measure: str = 'Standard Deviation', lookback: int = 20, dev_period: int = 12, yang_period: int = 14, smoothing_base: int = 5,) -> pd.DataFrame:
-    """https://www.tradingview.com/script/SdMSDRLI-Adaptive-Volatility-Scaled-Oscillator-AVSO-Zeiierman/"""
+    """
+    Adaptive volatility scaled oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/SdMSDRLI-Adaptive-Volatility-Scaled-Oscillator-AVSO-Zeiierman/
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    open_ : pd.Series
+        Open .
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    volume : pd.Series
+        Volume series.
+    metric_measure : str, default 'Standard Deviation'
+        Metric measure.
+    lookback : int, default 20
+        Lookback.
+    dev_period : int, default 12
+        Lookback / smoothing period.
+    yang_period : int, default 14
+        Lookback / smoothing period.
+    smoothing_base : int, default 5
+        Smoothing base.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     if metric_measure == 'Volume':
         metric = volume

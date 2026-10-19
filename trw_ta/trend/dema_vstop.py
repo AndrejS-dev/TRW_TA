@@ -5,7 +5,33 @@ from trw_ta import register_outputs
 
 @register_outputs('signal')
 def dema_vstop(high: pd.Series, low: pd.Series, close: pd.Series, dema_len: int = 30, vstop_len: int = 10, multiplier: float = 2.0) -> pd.Series:
-    """https://www.tradingview.com/script/G3eTG18L-Dema-Vstop-viResearch/"""
+    """
+    Dema vstop.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/G3eTG18L-Dema-Vstop-viResearch/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    dema_len : int, default 30
+        Lookback / smoothing period.
+    vstop_len : int, default 10
+        Lookback / smoothing period.
+    multiplier : float, default 2.0
+        Multiplier.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     src = ta.dema(close, dema_len)
     atr_vals = ta.atr1(high, low, close, vstop_len)
     atr_mul = atr_vals * multiplier

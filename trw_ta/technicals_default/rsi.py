@@ -4,6 +4,21 @@ from trw_ta import register_outputs
 
 @register_outputs('rsi')
 def rsi(src: pd.Series, length: int = 14) -> pd.Series:
+    """
+    Relative Strength Index (RSI).
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    length : int, default 14
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     change = src.diff()
     gain = change.clip(lower=0)
     loss = -change.clip(upper=0)

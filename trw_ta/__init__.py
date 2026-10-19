@@ -1,197 +1,619 @@
-# Library helper functions
+"""
+trw_ta — TradingView / Pine-style technical indicators for pandas.
+
+Public API
+----------
+Import the package flat style::
+
+    import trw_ta as ta
+    ta.rsi(close, 14)
+
+Or import by category::
+
+    from trw_ta.momentum import wavetrend
+    from trw_ta.technicals_default import rsi
+
+Naming conventions
+------------------
+* Public callables use ``snake_case``.
+* Deprecated aliases (``BBTrend``, ``BB_percent``, ``Standardize``, ``len`` /
+  ``maType`` kwargs) remain for compatibility but prefer the snake_case forms.
+* Core building blocks live in ``trw_ta.ta_core`` and are re-exported here first
+  so indicator modules that do ``import trw_ta as ta`` resolve during import.
+"""
+
+from __future__ import annotations
+
+__version__ = "0.2.5"
+
+# ---------------------------------------------------------------------------
+# Package helpers (must load before indicator modules)
+# ---------------------------------------------------------------------------
 from .list_of_functions import function_list, register_outputs
 
-# Core functions
-from .ta_core import sma, dema, ema, cum, nz, atr, atr1, atr2, wma, highest, lowest, average_day_range, rma, true_range, stdev, ma
-from .ta_core import  bollinger_bands, dev, hma, tr, rate_of_change, lsma, median, momentum, smma, tema, mad, aad, rmsd, emd
-from .ta_core import  price_volume_trend, alma, keltner, zlema, zlag_dema, zlag_ma, zlag_tema, gaussian_ma, rescale
+# ---------------------------------------------------------------------------
+# Core primitives — exported early for circular-import safety
+# ---------------------------------------------------------------------------
+from .ta_core import (
+    sma,
+    dema,
+    ema,
+    cum,
+    nz,
+    atr,
+    atr1,
+    atr2,
+    atr_sma,
+    atr_rma,
+    wma,
+    highest,
+    lowest,
+    average_day_range,
+    rma,
+    true_range,
+    stdev,
+    ma,
+    bollinger_bands,
+    dev,
+    hma,
+    tr,
+    rate_of_change,
+    lsma,
+    median,
+    momentum,
+    smma,
+    tema,
+    mad,
+    aad,
+    rmsd,
+    emd,
+    price_volume_trend,
+    alma,
+    keltner,
+    zlema,
+    zlag_dema,
+    zlag_ma,
+    zlag_tema,
+    gaussian_ma,
+    rescale,
+)
 
-# Default TradingView indicators
-from .technicals_default.alma import alma
-from .technicals_default.accumulation_distribution import accumulation_distribution
-from .technicals_default.aroon import aroon
-from .technicals_default.dmi_adx import dmi, adx
-from .technicals_default.awesome_oscillator import awesome_oscillator
-from .technicals_default.balance_of_power import balance_of_power
-from .technicals_default.bb_trend import BBTrend
-from .technicals_default.bb_percent import BB_percent
-from .technicals_default.b_bandwidth import bollinger_bandwidth
-from .technicals_default.bull_bear_power import bull_bear_power
-from .technicals_default.chaikin_money_flow import chaikin_money_flow
-from .technicals_default.chaikin_oscillator import chaikin_oscillator
-from .technicals_default.chande_momentum_oscillator import chande_momentum_oscillator
-from .technicals_default.choppiness_index import choppiness_index
-from .technicals_default.commodity_channel_index import commodity_channel_index
-from .technicals_default.coppock_curve import coppock_curve
-from .technicals_default.correlation_coefficient import correlation_coefficient
-from .technicals_default.donchian_channels import donchian_channels
-from .technicals_default.detrended_price_oscillator import detrended_price_oscillator
-from .technicals_default.elder_force_index import elder_force_index
-from .technicals_default.ease_of_movement import ease_of_movement
-from .technicals_default.fisher_transform import fisher_transform
-from .technicals_default.keltner_channel import keltner_channels
-from .technicals_default.historical_volatility import historical_volatility
-from .technicals_default.klinger_oscillator import klinger_oscillator
-from .technicals_default.know_sure_thing import know_sure_thing
-from .technicals_default.money_flow_index import money_flow_index
-from .technicals_default.macd import macd
-from .technicals_default.parabolic_sar import sar
-from .technicals_default.price_oscillator import price_oscillator
-from .technicals_default.rank_correlation_index import rank_correlation_index
-from .technicals_default.rsi import rsi
-from .technicals_default.relative_vigor_index import relative_vigor_index
-from .technicals_default.relative_volatility_index import relative_volatility_index
-from .technicals_default.smi_ergodic import smi_ergodic
-from .technicals_default.stochastic import stochastic
-from .technicals_default.stochastic_momentum_index import stochastic_momentum_index
-from .technicals_default.stochastic_rsi import stochastic_rsi
-from .technicals_default.supertrend import supertrend
-from .technicals_default.trend_strength_index import trend_strength_index
-from .technicals_default.trix import trix
-from .technicals_default.true_strength_index import true_strength_index
-from .technicals_default.ultimate_oscillator import ultimate_oscillator
-from .technicals_default.vstop import vstop
-from .technicals_default.vortex import vortex
-from .technicals_default.williams_percent_r import williams_percent_r
+# ---------------------------------------------------------------------------
+# Category packages (each defines its own __all__)
+# ---------------------------------------------------------------------------
+from . import technicals_default
+from . import statistics
+from . import volume
+from . import momentum
+from . import trend
+from . import mean_reversion
+from . import utils
+from . import ml
 
-# Statistical tools
-from .statistics.performance_metrics import total_return, annualized_return, mean_return, volatility, sharpe_ratio, sortino_ratio, information_ratio
-from .statistics.performance_metrics import treynor_ratio, calmar_ratio, max_drawdown, average_drawdown, recovery_factor, ulcer_index, hit_ratio
-from .statistics.performance_metrics import profit_factor, payoff_ratio, expected_value, alpha, beta, omega_ratio
-from .statistics.adf import rolling_adf_test
-from .statistics.linear_regression import linear_regression
-from .statistics.garch_volatility import garch_volatility
-from .statistics.linear_regression_slope import linear_regression_slope
-from .statistics.autocorrelation import autocorrelation
-from .statistics.kaufman_stress_indicator import kaufman_stress_indicator
+from .technicals_default import (
+    accumulation_distribution,
+    aroon,
+    dmi,
+    adx,
+    awesome_oscillator,
+    balance_of_power,
+    bb_trend,
+    BBTrend,
+    bb_percent,
+    BB_percent,
+    bollinger_bandwidth,
+    bull_bear_power,
+    chaikin_money_flow,
+    chaikin_oscillator,
+    chande_momentum_oscillator,
+    choppiness_index,
+    commodity_channel_index,
+    coppock_curve,
+    correlation_coefficient,
+    donchian_channels,
+    detrended_price_oscillator,
+    elder_force_index,
+    ease_of_movement,
+    fisher_transform,
+    keltner_channels,
+    historical_volatility,
+    klinger_oscillator,
+    know_sure_thing,
+    money_flow_index,
+    macd,
+    sar,
+    price_oscillator,
+    rank_correlation_index,
+    rsi,
+    relative_vigor_index,
+    relative_volatility_index,
+    smi_ergodic,
+    stochastic,
+    stochastic_momentum_index,
+    stochastic_rsi,
+    supertrend,
+    trend_strength_index,
+    trix,
+    true_strength_index,
+    ultimate_oscillator,
+    vstop,
+    vortex,
+    williams_percent_r,
+)
 
-from .statistics.recursive_ls import recursive_ls
-from .statistics.logistic import to_normalized_logistic_prob
+from .statistics import (
+    total_return,
+    annualized_return,
+    mean_return,
+    volatility,
+    sharpe_ratio,
+    sortino_ratio,
+    information_ratio,
+    treynor_ratio,
+    calmar_ratio,
+    max_drawdown,
+    average_drawdown,
+    recovery_factor,
+    ulcer_index,
+    hit_ratio,
+    profit_factor,
+    payoff_ratio,
+    expected_value,
+    alpha,
+    beta,
+    omega_ratio,
+    rolling_adf_test,
+    linear_regression,
+    garch_volatility,
+    linear_regression_slope,
+    autocorrelation,
+    kaufman_stress_indicator,
+    recursive_ls,
+    to_normalized_logistic_prob,
+)
 
-# Volume tools
-from .volume.fisher_volume_transform import fisher_volume_transform
-from .volume.volume_summer import volume_summer
-from .volume.volume_trend_swing_points import volume_trend_swing_points
-from .volume.volume_z_score import volume_z_score
+from .volume import (
+    fisher_volume_transform,
+    volume_summer,
+    volume_trend_swing_points,
+    volume_z_score,
+    volume_pressure,
+    normalised_volume_oscillator,
+)
 
-from .volume.volume_pressure import volume_pressure
-from .volume.normalised_volume_oscillator import normalised_volume_oscillator
+from .momentum import (
+    adaptive_sigmoid_zscore,
+    anchored_momentum,
+    beardy_squeeze,
+    chandelier_exit_oscillator,
+    dpmo,
+    ehlers_center_of_gravity,
+    ehlers_instantaneous_trend,
+    ehlers_simple_cycle_indicator,
+    elliot_wave_oscillator,
+    fdi_cumulative_price_momentum,
+    firefly_oscillator,
+    forward_backward_exponential_oscillator,
+    fractal_strength_oscillator,
+    fsvzo,
+    gaussian_mixture_model,
+    hurst_cycle_channel_oscillator,
+    hurst_momentum_oscillator,
+    mro_oscillator,
+    oscillator_matrix,
+    premier_stochastic_oscillator,
+    pulsema_oscillator,
+    reflex_oscillator,
+    reversal_scalper,
+    savitzky_golay_hampel_filter,
+    schaff_trend_cycle,
+    squeeze_momentum,
+    stochastic_zscore,
+    trades_in_favor,
+    trendflex_oscillator,
+    trendlines_oscillator,
+    ttm_squeeze_oscillator,
+    twiggs_money_flow,
+    vams_oscillator,
+    velocity_pressure_index,
+    void_momentum_zscore,
+    vwap_dev_oscillator,
+    wavetrend,
+    wavetrend_oscillator,
+    weis_wave_candle,
+    zeiierman_range_oscillator,
+    price_lag_factor,
+    harmonic_resonance_oscillator,
+    adaptive_momentum_oscillator,
+    normalized_resonator,
+    trend_pressure_prism,
+    adaptive_volatility_scaled_oscillator,
+    trend_speed_analyzer,
+    directional_logistic_oscillator,
+    dynamic_median_momentum_oscillator,
+)
 
-# Momentum tools
-from .momentum.adaptive_sigmoid_zscore import adaptive_sigmoid_zscore
-from .momentum.anchored_momentum import anchored_momentum
-from .momentum.beardy_squeeze import beardy_squeeze
-from .momentum.chandelier_exit_oscillator import chandelier_exit_oscillator
-from .momentum.dpmo import dpmo
-from .momentum.ehlers_center_of_gravity import ehlers_center_of_gravity
-from .momentum.ehlers_instantaneous_trend import ehlers_instantaneous_trend
-from .momentum.ehlers_simple_cycle_indicator import ehlers_simple_cycle_indicator
-from .momentum.elliot_wave_oscillator import elliot_wave_oscillator
-from .momentum.fdi_cumulative_price_momentum import fdi_cumulative_price_momentum
-from .momentum.firefly_oscillator import firefly_oscillator
-from .momentum.forward_backward_exponential_oscillator import forward_backward_exponential_oscillator
-from .momentum.fractal_strength_oscillator import fractal_strength_oscillator
-from .momentum.fsvzo import fsvzo
-from .momentum.gaussian_mixture_model import gaussian_mixture_model
-from .momentum.hurst_cycle_channel_oscillator import hurst_cycle_channel_oscillator
-from .momentum.hurst_momentum_oscillator import hurst_momentum_oscillator
-from .momentum.momentum_acceleration import momentum_acceleration
-from .momentum.mro_oscillator import mro_oscillator
-from .momentum.normalized_kama_oscillator import normalized_kama_osc
-from .momentum.oscillator_matrix import oscillator_matrix
-from .momentum.premier_stochastic_oscillator import premier_stochastic_oscillator
-from .momentum.pulsema_oscillator import pulsema_oscillator
-from .momentum.reflex_oscillator import reflex_oscillator
-from .momentum.reversal_scalper import reversal_scalper
-from .momentum.rsi_trail import rsi_trail
-from .momentum.savitzky_golay_hampel_filter import savitzky_golay_hampel_filter
-from .momentum.schaff_trend_cycle import schaff_trend_cycle
-from .momentum.squeeze_momentum import squeeze_momentum
-from .momentum.stochastic_zscore import stochastic_zscore
-from .momentum.trades_in_favor import trades_in_favor
-from .momentum.trendflex_oscillator import trendflex_oscillator
-from .momentum.trendlines_oscillator import trendlines_oscillator
-from .momentum.ttm_squeeze_oscillator import ttm_squeeze_oscillator
-from .momentum.twiggs_money_flow import twiggs_money_flow
-from .momentum.vams_oscillator import vams_oscillator
-from .momentum.velocity_pressure_index import velocity_pressure_index
-from .momentum.void_momentum_zscore import void_momentum_zscore
-from .momentum.vwap_dev_oscillator import vwap_dev_oscillator
-from .momentum.wave_trend import wavetrend
-from .momentum.wavetrend_oscillator import wavetrend_oscillator
-from .momentum.weis_wave_candle import weis_wave_candle
-from .momentum.zeiierman_range_oscillator import zeiierman_range_oscillator
+from .trend import (
+    median_kijun_sen,
+    mad_trend,
+    aad_trend,
+    rmsd_trend,
+    emd_trend,
+    cauchy_trend,
+    median_stdev,
+    hma_swing_points,
+    median_for_loop,
+    market_sentiment_trend_gauge,
+    dema_vstop,
+    hull_for_loop,
+    dema_sma_stdev,
+    alma_vii,
+    white_noise,
+    coral_trend,
+    deb_supertrend,
+    boosted_moving_average,
+    enhanced_keltner_trend,
+    follow_line,
+    adaptive_price_zone,
+    swma_atr_signals,
+    adaptive_trend_flow,
+    dynamic_score_psar,
+    ema_volatility_channel,
+    sd_zero_lag,
+    quartile_for_loop,
+    variable_moving_average,
+    strength_index,
+    logarithmic_moving_average,
+    lowess_trend,
+    sma_trend_spectrum,
+    bears_bulls,
+    rmo,
+    projection_bands,
+    trend_trigger_factor,
+    moving_average_trend_sniper,
+    pure_price_zone_flow,
+    continuation_index,
+    kama_trend_flip,
+    swing_flow,
+    kalman_hull_kijun,
+    polynomial_regression_ma,
+    momentum_acceleration,
+    normalized_kama_osc,
+    rsi_trail,
+)
 
-from .momentum.price_lag_factor import price_lag_factor
-from .momentum.harmonic_resonance_oscillator import harmonic_resonance_oscillator
-from .momentum.adaptive_momentum_oscillator import adaptive_momentum_oscillator
-from .momentum.normalized_resonator import normalized_resonator
-from .momentum.trend_pressure_prism import trend_pressure_prism
-from .momentum.adaptive_volatility_scaled_oscillator import adaptive_volatility_scaled_oscillator
-from .momentum.trend_speed_analyzer import trend_speed_analyzer
-from .momentum.directional_logistic_oscillator import directional_logistic_oscillator
-from .momentum.dynamic_median_momentum_oscillator import dynamic_median_momentum_oscillator
+from .mean_reversion import quantum_dip_hunter
 
-# Trend tools
-from .trend.median_kijun_sen import median_kijun_sen
-from .trend.mad_trend import mad_trend
-from .trend.aad_trend import aad_trend
-from .trend.rmsd_trend import rmsd_trend
-from .trend.emd_trend import emd_trend
-from .trend.cauchy_trend import cauchy_trend
-from .trend.median_stdev import median_stdev
-from .trend.hma_swing_points import hma_swing_points
-from .trend.median_for_loop import median_for_loop
-from .trend.market_sentiment_trend_gauge import market_sentiment_trend_gauge
-from .trend.dema_vstop import dema_vstop
-from .trend.hull_for_loop import hull_for_loop
-from .trend.dema_sma_stdev import dema_sma_stdev
-from .trend.alma_vii import alma_vii
-from .trend.white_noise import white_noise
-from .trend.coral_trend import coral_trend
-from .trend.deb_supertrend import deb_supertrend
-from .trend.boosted_moving_average import boosted_moving_average
-from .trend.enhanced_keltner_trend import enhanced_keltner_trend
-from .trend.follow_line import follow_line
-from .trend.adaptive_price_zone import adaptive_price_zone
-from .trend.sine_wma_atr import swma_atr_signals
-from .trend.adaptive_trend_flow import adaptive_trend_flow
-from .trend.dynamic_score_psar import dynamic_score_psar
-from .trend.ema_volatility_channel import ema_volatility_channel
-from .trend.sd_zero_lag import sd_zero_lag
-from .trend.quartile_for_loop import quartile_for_loop
-from .trend.variable_moving_average import variable_moving_average
-from .trend.strength_index import strength_index
-from .trend.log_ma import logarithmic_moving_average
-from .trend.lowess import lowess_trend
-from .trend.sma_trend_spectrum import sma_trend_spectrum
-from .trend.bears_bulls import bears_bulls
-from .trend.rmo import rmo
-from .trend.projection_bands import projection_bands
-from .trend.trend_trigger_factor import trend_trigger_factor
-from .trend.moving_average_trend_sniper import moving_average_trend_sniper
-from .trend.pure_price_zone_flow import pure_price_zone_flow
-from .trend.continuation_index import continuation_index
-from .trend.kama_trend_flip import kama_trend_flip
+from .utils import (
+    generate_anchored_synthetic_prices,
+    fetch_ohlcv_data,
+    fetch_ohlcv_data_robust,
+    send_telegram_message,
+    select_features,
+    df_columns_tolist,
+)
 
-from .trend.swing_flow import swing_flow
-from .trend.kalman_hull_kijun import kalman_hull_kijun
-from .trend.polynomial_regression_ma import polynomial_regression_ma
+from .ml import (
+    euclidean_distance,
+    manhattan_distance,
+    minkowski_distance,
+    cosine_distance,
+    kl_divergence,
+    js_divergence,
+    mahalanobis_distance,
+    lorentzian_distance,
+    sigmoid,
+    tanh,
+    relu,
+    leaky_relu,
+    softmax,
+    gelu,
+    swish,
+    mse,
+    mae,
+    huber_loss,
+    binary_crossentropy,
+    categorical_crossentropy,
+    hinge_loss,
+    minmax_scaling,
+    l2_normalize,
+    log_scale,
+    linear_kernel,
+    polynomial_kernel,
+    rbf_kernel,
+    laplacian_kernel,
+    sigmoid_kernel,
+    l1_regularization,
+    l2_regularization,
+    soft_threshold,
+    dropout,
+    standardize,
+    Standardize,
+)
 
-# Mean Reversion tools
-from .mean_reversion.quantum_dip_hunter import quantum_dip_hunter
-
-# Utility functions
-from .utils.anchored_synthetic_data_generator import generate_anchored_synthetic_prices
-from .utils.fetch_ohlcv_data import fetch_ohlcv_data, fetch_ohlcv_data_robust
-from .utils.telegram import send_telegram_message
-from .utils.auto_search import select_features, df_columns_tolist
-
-# Machine Learning
-from .ml.ml_core import euclidean_distance, manhattan_distance, minkowski_distance, cosine_distance, kl_divergence, js_divergence
-from .ml.ml_core import mahalanobis_distance, lorentzian_distance, sigmoid, tanh, relu, leaky_relu, softmax, gelu, swish, mse, mae
-from .ml.ml_core import huber_loss, binary_crossentropy, categorical_crossentropy, hinge_loss, minmax_scaling, l2_normalize
-from .ml.ml_core import log_scale, linear_kernel, polynomial_kernel, rbf_kernel, laplacian_kernel, sigmoid_kernel, l1_regularization
-from .ml.ml_core import l2_regularization, soft_threshold, dropout
-from .ml.scaler import Standardize
-from .ml.cluster import fit_predict_KMeans
+# ---------------------------------------------------------------------------
+# Explicit public surface
+# ---------------------------------------------------------------------------
+__all__ = [
+    "__version__",
+    "function_list",
+    "register_outputs",
+    # core
+    "sma",
+    "dema",
+    "ema",
+    "cum",
+    "nz",
+    "atr",
+    "atr1",
+    "atr2",
+    "atr_sma",
+    "atr_rma",
+    "wma",
+    "highest",
+    "lowest",
+    "average_day_range",
+    "rma",
+    "true_range",
+    "stdev",
+    "ma",
+    "bollinger_bands",
+    "dev",
+    "hma",
+    "tr",
+    "rate_of_change",
+    "lsma",
+    "median",
+    "momentum",
+    "smma",
+    "tema",
+    "mad",
+    "aad",
+    "rmsd",
+    "emd",
+    "price_volume_trend",
+    "alma",
+    "keltner",
+    "zlema",
+    "zlag_dema",
+    "zlag_ma",
+    "zlag_tema",
+    "gaussian_ma",
+    "rescale",
+    # technicals_default
+    "accumulation_distribution",
+    "aroon",
+    "dmi",
+    "adx",
+    "awesome_oscillator",
+    "balance_of_power",
+    "bb_trend",
+    "BBTrend",
+    "bb_percent",
+    "BB_percent",
+    "bollinger_bandwidth",
+    "bull_bear_power",
+    "chaikin_money_flow",
+    "chaikin_oscillator",
+    "chande_momentum_oscillator",
+    "choppiness_index",
+    "commodity_channel_index",
+    "coppock_curve",
+    "correlation_coefficient",
+    "donchian_channels",
+    "detrended_price_oscillator",
+    "elder_force_index",
+    "ease_of_movement",
+    "fisher_transform",
+    "keltner_channels",
+    "historical_volatility",
+    "klinger_oscillator",
+    "know_sure_thing",
+    "money_flow_index",
+    "macd",
+    "sar",
+    "price_oscillator",
+    "rank_correlation_index",
+    "rsi",
+    "relative_vigor_index",
+    "relative_volatility_index",
+    "smi_ergodic",
+    "stochastic",
+    "stochastic_momentum_index",
+    "stochastic_rsi",
+    "supertrend",
+    "trend_strength_index",
+    "trix",
+    "true_strength_index",
+    "ultimate_oscillator",
+    "vstop",
+    "vortex",
+    "williams_percent_r",
+    # statistics
+    "total_return",
+    "annualized_return",
+    "mean_return",
+    "volatility",
+    "sharpe_ratio",
+    "sortino_ratio",
+    "information_ratio",
+    "treynor_ratio",
+    "calmar_ratio",
+    "max_drawdown",
+    "average_drawdown",
+    "recovery_factor",
+    "ulcer_index",
+    "hit_ratio",
+    "profit_factor",
+    "payoff_ratio",
+    "expected_value",
+    "alpha",
+    "beta",
+    "omega_ratio",
+    "rolling_adf_test",
+    "linear_regression",
+    "garch_volatility",
+    "linear_regression_slope",
+    "autocorrelation",
+    "kaufman_stress_indicator",
+    "recursive_ls",
+    "to_normalized_logistic_prob",
+    # volume
+    "fisher_volume_transform",
+    "volume_summer",
+    "volume_trend_swing_points",
+    "volume_z_score",
+    "volume_pressure",
+    "normalised_volume_oscillator",
+    # momentum
+    "adaptive_sigmoid_zscore",
+    "anchored_momentum",
+    "beardy_squeeze",
+    "chandelier_exit_oscillator",
+    "dpmo",
+    "ehlers_center_of_gravity",
+    "ehlers_instantaneous_trend",
+    "ehlers_simple_cycle_indicator",
+    "elliot_wave_oscillator",
+    "fdi_cumulative_price_momentum",
+    "firefly_oscillator",
+    "forward_backward_exponential_oscillator",
+    "fractal_strength_oscillator",
+    "fsvzo",
+    "gaussian_mixture_model",
+    "hurst_cycle_channel_oscillator",
+    "hurst_momentum_oscillator",
+    "mro_oscillator",
+    "oscillator_matrix",
+    "premier_stochastic_oscillator",
+    "pulsema_oscillator",
+    "reflex_oscillator",
+    "reversal_scalper",
+    "savitzky_golay_hampel_filter",
+    "schaff_trend_cycle",
+    "squeeze_momentum",
+    "stochastic_zscore",
+    "trades_in_favor",
+    "trendflex_oscillator",
+    "trendlines_oscillator",
+    "ttm_squeeze_oscillator",
+    "twiggs_money_flow",
+    "vams_oscillator",
+    "velocity_pressure_index",
+    "void_momentum_zscore",
+    "vwap_dev_oscillator",
+    "wavetrend",
+    "wavetrend_oscillator",
+    "weis_wave_candle",
+    "zeiierman_range_oscillator",
+    "price_lag_factor",
+    "harmonic_resonance_oscillator",
+    "adaptive_momentum_oscillator",
+    "normalized_resonator",
+    "trend_pressure_prism",
+    "adaptive_volatility_scaled_oscillator",
+    "trend_speed_analyzer",
+    "directional_logistic_oscillator",
+    "dynamic_median_momentum_oscillator",
+    # trend
+    "median_kijun_sen",
+    "mad_trend",
+    "aad_trend",
+    "rmsd_trend",
+    "emd_trend",
+    "cauchy_trend",
+    "median_stdev",
+    "hma_swing_points",
+    "median_for_loop",
+    "market_sentiment_trend_gauge",
+    "dema_vstop",
+    "hull_for_loop",
+    "dema_sma_stdev",
+    "alma_vii",
+    "white_noise",
+    "coral_trend",
+    "deb_supertrend",
+    "boosted_moving_average",
+    "enhanced_keltner_trend",
+    "follow_line",
+    "adaptive_price_zone",
+    "swma_atr_signals",
+    "adaptive_trend_flow",
+    "dynamic_score_psar",
+    "ema_volatility_channel",
+    "sd_zero_lag",
+    "quartile_for_loop",
+    "variable_moving_average",
+    "strength_index",
+    "logarithmic_moving_average",
+    "lowess_trend",
+    "sma_trend_spectrum",
+    "bears_bulls",
+    "rmo",
+    "projection_bands",
+    "trend_trigger_factor",
+    "moving_average_trend_sniper",
+    "pure_price_zone_flow",
+    "continuation_index",
+    "kama_trend_flip",
+    "swing_flow",
+    "kalman_hull_kijun",
+    "polynomial_regression_ma",
+    "momentum_acceleration",
+    "normalized_kama_osc",
+    "rsi_trail",
+    # mean_reversion
+    "quantum_dip_hunter",
+    # utils
+    "generate_anchored_synthetic_prices",
+    "fetch_ohlcv_data",
+    "fetch_ohlcv_data_robust",
+    "send_telegram_message",
+    "select_features",
+    "df_columns_tolist",
+    # ml
+    "euclidean_distance",
+    "manhattan_distance",
+    "minkowski_distance",
+    "cosine_distance",
+    "kl_divergence",
+    "js_divergence",
+    "mahalanobis_distance",
+    "lorentzian_distance",
+    "sigmoid",
+    "tanh",
+    "relu",
+    "leaky_relu",
+    "softmax",
+    "gelu",
+    "swish",
+    "mse",
+    "mae",
+    "huber_loss",
+    "binary_crossentropy",
+    "categorical_crossentropy",
+    "hinge_loss",
+    "minmax_scaling",
+    "l2_normalize",
+    "log_scale",
+    "linear_kernel",
+    "polynomial_kernel",
+    "rbf_kernel",
+    "laplacian_kernel",
+    "sigmoid_kernel",
+    "l1_regularization",
+    "l2_regularization",
+    "soft_threshold",
+    "dropout",
+    "standardize",
+    "Standardize",
+    # subpackages
+    "technicals_default",
+    "statistics",
+    "volume",
+    "momentum",
+    "trend",
+    "mean_reversion",
+    "utils",
+    "ml",
+]

@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('tfo')
 def trendflex_oscillator(series: pd.Series, period_essf: float = 7.5, period_tflx: int = 20, period_frms: float = 33.0) -> pd.Series:
-    """https://www.tradingview.com/v/8ZSALctc/"""
+    """
+    Trendflex oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/8ZSALctc/
+    
+    Parameters
+    ----------
+    series : pd.Series
+        Input price or value series.
+    period_essf : float, default 7.5
+        Period essf.
+    period_tflx : int, default 20
+        Period tflx.
+    period_frms : float, default 33.0
+        Period frms.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     sqrt2pi = np.sqrt(2.0) * np.pi
     alpha = sqrt2pi / period_essf
     beta = np.exp(-alpha)

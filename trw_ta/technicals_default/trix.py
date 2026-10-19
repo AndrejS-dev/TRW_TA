@@ -4,6 +4,21 @@ from trw_ta import register_outputs
 
 @register_outputs('trix')
 def trix(close: pd.Series, length: int = 18) -> pd.Series:
+    """
+    TRIX.
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    length : int, default 18
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     log_close = np.log(close)
 
     ema1 = log_close.ewm(span=length, adjust=False).mean()

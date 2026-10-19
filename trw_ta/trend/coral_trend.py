@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('bfr', 'signal')
 def coral_trend(close: pd.Series, smoothing: int = 21, constant_d: float = 0.4) -> pd.DataFrame:
-    """https://www.tradingview.com/v/qyUwc2Al/"""
+    """
+    Coral trend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/qyUwc2Al/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    smoothing : int, default 21
+        Smoothing.
+    constant_d : float, default 0.4
+        Constant d.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     src = close.copy()
     di = (smoothing - 1.0) / 2.0 + 1.0
     c1 = 2 / (di + 1.0)
