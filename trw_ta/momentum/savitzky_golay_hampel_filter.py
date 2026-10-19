@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from trw_ta import register_outputs
 
-@register_outputs('oscillator', 'signal', 'momentum')
+@register_outputs('filtered_price', 'trend_strength', 'bullish', "bearish")
 def savitzky_golay_hampel_filter(
     close: pd.Series,
     poly_order: int = 2,
