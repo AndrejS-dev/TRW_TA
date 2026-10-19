@@ -16,15 +16,12 @@ from .fsvzo import fsvzo
 from .gaussian_mixture_model import gaussian_mixture_model
 from .hurst_cycle_channel_oscillator import hurst_cycle_channel_oscillator
 from .hurst_momentum_oscillator import hurst_momentum_oscillator
-from .momentum_acceleration import momentum_acceleration
 from .mro_oscillator import mro_oscillator
-from .normalized_kama_oscillator import normalized_kama_osc
 from .oscillator_matrix import oscillator_matrix
 from .premier_stochastic_oscillator import premier_stochastic_oscillator
 from .pulsema_oscillator import pulsema_oscillator
 from .reflex_oscillator import reflex_oscillator
 from .reversal_scalper import reversal_scalper
-from .rsi_trail import rsi_trail
 from .savitzky_golay_hampel_filter import savitzky_golay_hampel_filter
 from .schaff_trend_cycle import schaff_trend_cycle
 from .squeeze_momentum import squeeze_momentum
@@ -70,15 +67,12 @@ __all__ = [
     "gaussian_mixture_model",
     "hurst_cycle_channel_oscillator",
     "hurst_momentum_oscillator",
-    "momentum_acceleration",
     "mro_oscillator",
-    "normalized_kama_osc",
     "oscillator_matrix",
     "premier_stochastic_oscillator",
     "pulsema_oscillator",
     "reflex_oscillator",
     "reversal_scalper",
-    "rsi_trail",
     "savitzky_golay_hampel_filter",
     "schaff_trend_cycle",
     "squeeze_momentum",

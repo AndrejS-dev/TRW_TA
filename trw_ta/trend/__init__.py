@@ -42,6 +42,9 @@ from .kama_trend_flip import kama_trend_flip
 from .swing_flow import swing_flow
 from .kalman_hull_kijun import kalman_hull_kijun
 from .polynomial_regression_ma import polynomial_regression_ma
+from .momentum_acceleration import momentum_acceleration
+from .normalized_kama_oscillator import normalized_kama_osc
+from .rsi_trail import rsi_trail
 
 __all__ = [
     "median_kijun_sen",
@@ -87,4 +90,7 @@ __all__ = [
     "swing_flow",
     "kalman_hull_kijun",
     "polynomial_regression_ma",
+    "momentum_acceleration",
+    "normalized_kama_osc",
+    "rsi_trail",
 ]
