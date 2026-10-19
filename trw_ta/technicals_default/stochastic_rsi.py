@@ -3,6 +3,27 @@ from trw_ta import register_outputs
 
 @register_outputs('k', 'd')
 def stochastic_rsi(src: pd.Series, rsi_length: int = 14, stoch_length: int = 14, smooth_k: int = 3, smooth_d: int = 3) -> pd.DataFrame:
+    """
+    Stochastic RSI.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    rsi_length : int, default 14
+        Lookback / smoothing period.
+    stoch_length : int, default 14
+        Lookback / smoothing period.
+    smooth_k : int, default 3
+        Smooth k.
+    smooth_d : int, default 3
+        Smooth d.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     delta = src.diff()
     gain = delta.clip(lower=0)
     loss = -delta.clip(upper=0)

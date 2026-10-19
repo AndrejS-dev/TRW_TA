@@ -6,7 +6,27 @@ from trw_ta import register_outputs
 def ehlers_simple_cycle_indicator(high: pd.Series,
                                    low: pd.Series,
                                    alpha: float = 0.07) -> pd.DataFrame:
-    """https://www.tradingview.com/script/xQ4mP4kc-Ehlers-Simple-Cycle-Indicator-LazyBear/"""
+    """
+    Ehlers simple cycle indicator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/xQ4mP4kc-Ehlers-Simple-Cycle-Indicator-LazyBear/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    alpha : float, default 0.07
+        Alpha.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     src = (high + low) / 2.0
     smooth = (src + 2*src.shift(1) + 2*src.shift(2) + src.shift(3)) / 6.0
     cycle = np.zeros(len(src))

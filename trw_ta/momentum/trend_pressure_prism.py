@@ -3,16 +3,72 @@ import numpy as np
 from trw_ta import register_outputs
 
 def manual_tanh(x: pd.Series) -> pd.Series:
+    """
+    Manual tanh.
+    
+    Parameters
+    ----------
+    x : pd.Series
+        Numeric input.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     e2x = np.exp(2 * x)
     return (e2x - 1) / (e2x + 1)
 
 def manual_clamp(x: pd.Series, min_val: float, max_val: float) -> pd.Series:
+    """
+    Manual clamp.
+    
+    Parameters
+    ----------
+    x : pd.Series
+        Numeric input.
+    min_val : float
+        Min val.
+    max_val : float
+        Max val.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     return np.maximum(min_val, np.minimum(max_val, x))
 
 @register_outputs('prism', 'signal')
 def trend_pressure_prism(high: pd.Series, low: pd.Series, close: pd.Series,
     lookback_period: int = 20, sensitivity: float = 1.5, signal_length: int = 9) -> pd.DataFrame:
-    """https://www.tradingview.com/script/et2oFiWR-Trend-Pressure-Prism-LuxAlgo/"""
+    """
+    Trend pressure prism.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/et2oFiWR-Trend-Pressure-Prism-LuxAlgo/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    lookback_period : int, default 20
+        Lookback / smoothing period.
+    sensitivity : float, default 1.5
+        Sensitivity.
+    signal_length : int, default 9
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     mom_roc = close.pct_change(lookback_period) * 100
     mom_std = mom_roc.rolling(lookback_period, min_periods=1).std()
     mom_drive = (mom_roc / (mom_std + 1e-10)).ewm(span=5, adjust=False, min_periods=1).mean()

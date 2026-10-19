@@ -5,7 +5,24 @@ from trw_ta import register_outputs
 
 @register_outputs('adf', 'critical value', 'is mean reverting (bool)')
 def rolling_adf_test(series: pd.Series, lookback=100, max_lag=0, confidence='90%'):
-   """https://www.tradingview.com/script/KjD8ByIQ-Augmented-Dickey-Fuller-ADF-mean-reversion-test/"""
+   """
+   Rolling adf test.
+   
+   Python conversion of the TradingView / Pine Script indicator.
+   
+   Source: https://www.tradingview.com/script/KjD8ByIQ-Augmented-Dickey-Fuller-ADF-mean-reversion-test/
+   
+   Parameters
+   ----------
+   series : pd.Series
+       Input price or value series.
+   lookback : Any, default 100
+       Lookback.
+   max_lag : Any, default 0
+       Max lag.
+   confidence : Any, default '90%'
+       Confidence.
+   """
    
    conf_map = {'90%': '10%', '95%': '5%', '99%': '1%'}
    if confidence not in conf_map:

@@ -10,7 +10,31 @@ def savitzky_golay_hampel_filter(
     hampel_threshold: float = 3.0,
     smoothing_factor: int = 3
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/JqSLVPrd-Savitzky-Golay-Hampel-Filter-AlphaNatt/"""
+    """
+    Savitzky golay hampel filter.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/JqSLVPrd-Savitzky-Golay-Hampel-Filter-AlphaNatt/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    poly_order : int, default 2
+        Poly order.
+    window_size : int, default 21
+        Window size.
+    hampel_threshold : float, default 3.0
+        Hampel threshold.
+    smoothing_factor : int, default 3
+        Smoothing factor.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     # Ensure window size is odd
     window = window_size if window_size % 2 == 1 else window_size + 1
     half_window = window // 2

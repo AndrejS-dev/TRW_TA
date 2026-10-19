@@ -6,7 +6,35 @@ from trw_ta import register_outputs
 def kaufman_stress_indicator(high: pd.Series, low: pd.Series, close: pd.Series, 
                            d2_high: pd.Series, d2_low: pd.Series, d2_close: pd.Series, 
                            length: int = 60) -> pd.DataFrame:
-    """https://www.tradingview.com/script/uKzpaELr-Kaufman-Stress-Indicator/"""
+    """
+    Kaufman stress indicator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/uKzpaELr-Kaufman-Stress-Indicator/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    d2_high : pd.Series
+        D2 high.
+    d2_low : pd.Series
+        D2 low.
+    d2_close : pd.Series
+        D2 close.
+    length : int, default 60
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     def calc_range(hi, lo, len):
         return hi.rolling(window=len).max() - lo.rolling(window=len).min()
     

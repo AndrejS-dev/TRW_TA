@@ -4,6 +4,21 @@ from trw_ta import register_outputs
 
 @register_outputs('cmo')
 def chande_momentum_oscillator(source: pd.Series, length: int = 9) -> pd.Series:
+    """
+    Chande Momentum Oscillator (CMO).
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    length : int, default 9
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     mom = source.diff()
 
     m1 = np.where(mom >= 0, mom, 0.0)

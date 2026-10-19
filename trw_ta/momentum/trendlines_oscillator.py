@@ -7,7 +7,41 @@ def trendlines_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, len
                                            data_smoothing: str = 'NONE', data_smoothing_length: int = 10, 
                                            signal_smoothing: bool = True, signal_smoothing_type: str = 'TMA', 
                                            signal_smoothing_length: int = 10) -> pd.DataFrame:
-    """https://www.tradingview.com/script/3oeha5F1-Trendlines-Oscillator-LuxAlgo/"""
+    """
+    Trendlines oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/3oeha5F1-Trendlines-Oscillator-LuxAlgo/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 5
+        Lookback period.
+    memory : int, default 10
+        Memory.
+    data_smoothing : str, default 'NONE'
+        Data smoothing.
+    data_smoothing_length : int, default 10
+        Lookback / smoothing period.
+    signal_smoothing : bool, default True
+        Signal smoothing.
+    signal_smoothing_type : str, default 'TMA'
+        Signal smoothing type.
+    signal_smoothing_length : int, default 10
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     if not all(isinstance(s, pd.Series) for s in [high, low, close]):
         raise TypeError("Inputs must be pandas Series")
     if not (high.index.equals(low.index) and low.index.equals(close.index)):

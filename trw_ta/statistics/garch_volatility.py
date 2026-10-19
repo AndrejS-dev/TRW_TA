@@ -5,7 +5,29 @@ from trw_ta import register_outputs
 
 @register_outputs('garch')
 def garch_volatility(close: pd.Series, alpha_start=0.10, beta_start=0.80, ema_length=20) -> pd.Series:
-    """https://www.tradingview.com/v/a6jqpmu4/"""
+    """
+    Garch volatility.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/a6jqpmu4/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    alpha_start : Any, default 0.1
+        Alpha start.
+    beta_start : Any, default 0.8
+        Beta start.
+    ema_length : Any, default 20
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     ema = ta.ema(close, ema_length)
     variance = np.full_like(close.values, np.nan, dtype=float)
 

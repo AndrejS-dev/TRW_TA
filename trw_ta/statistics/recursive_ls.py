@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('mid', 'upper', 'lower')
 def recursive_ls(close: pd.Series, lambda_: float = 0.98, mult: float = 2.0) -> pd.DataFrame:
-    """https://www.tradingview.com/script/ASDKkNUJ-Recursive-Least-Squares-Forecast-LuxAlgo/"""
+    """
+    Recursive ls.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/ASDKkNUJ-Recursive-Least-Squares-Forecast-LuxAlgo/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    lambda_ : float, default 0.98
+        Lambda .
+    mult : float, default 2.0
+        Band or ATR multiplier.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     n = len(close)
     if n == 0:
         return pd.DataFrame(index=close.index, columns=['mid', 'upper', 'lower'])

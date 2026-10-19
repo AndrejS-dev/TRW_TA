@@ -6,7 +6,33 @@ from trw_ta import register_outputs
 @register_outputs('trend')
 def swing_flow(high: pd.Series, low: pd.Series, close: pd.Series, len_period: int = 10, 
                band_mult: float = 2.0, volatility_length: int = 50) -> pd.DataFrame:
-    """https://www.tradingview.com/script/BtGC9TGm-Swing-Flow-Indicator-ChartPrime/"""
+    """
+    Swing flow.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/BtGC9TGm-Swing-Flow-Indicator-ChartPrime/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    len_period : int, default 10
+        Lookback / smoothing period.
+    band_mult : float, default 2.0
+        Multiplier.
+    volatility_length : int, default 50
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     vol_proxy = (high.rolling(volatility_length, min_periods=volatility_length//2)
                  .max() - low.rolling(volatility_length, min_periods=volatility_length//2).min())
     volatility = vol_proxy * band_mult

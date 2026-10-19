@@ -5,6 +5,25 @@ from trw_ta import register_outputs
 
 @register_outputs('dmi+', 'dmi-')
 def dmi(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 14) -> pd.DataFrame:
+    """
+    Directional Movement Index (DMI).
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 14
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     up_move = high.diff()
     down_move = -low.diff()
 
@@ -24,6 +43,27 @@ def dmi(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 14) -> 
 
 @register_outputs('adx')
 def adx(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 14, adx_smoothing: int = 14) -> pd.DataFrame:
+    """
+    Average Directional Index (ADX).
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 14
+        Lookback period.
+    adx_smoothing : int, default 14
+        Adx smoothing.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     up_move = high.diff()
     down_move = -low.diff()
 

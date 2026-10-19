@@ -4,6 +4,20 @@ import trw_ta as ta
 from trw_ta import register_outputs
 
 def DFT(x, y, Nx, direction):
+    """
+    DFT.
+    
+    Parameters
+    ----------
+    x : Any
+        Numeric input.
+    y : Any
+        Numeric input.
+    Nx : Any
+        Nx.
+    direction : Any
+        Direction.
+    """
     xArr = np.zeros(Nx)
     yArr = np.zeros(Nx)
     
@@ -27,6 +41,16 @@ def DFT(x, y, Nx, direction):
     return xArr, yArr
 
 def calculate_dft(close, N):
+    """
+    Calculate dft.
+    
+    Parameters
+    ----------
+    close : Any
+        Close price series.
+    N : Any
+        N.
+    """
     x = np.zeros(N)
     y = np.zeros(N)
     for i in range(N):
@@ -42,7 +66,37 @@ def calculate_dft(close, N):
 def fsvzo(close: pd.Series, volume: pd.Series, N: int = 3, lengthV: int = 7, 
                   smoothvzo: bool = True, emaLength_init: int = 1, 
                   minEmaLength: int = 1, maxEmaLength: int = 8) -> pd.DataFrame:
-    """https://www.tradingview.com/script/N1QqqFtc-FSVZO/"""
+    """
+    Fsvzo.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/N1QqqFtc-FSVZO/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    N : int, default 3
+        N.
+    lengthV : int, default 7
+        Lengthv.
+    smoothvzo : bool, default True
+        Smoothvzo.
+    emaLength_init : int, default 1
+        Emalength init.
+    minEmaLength : int, default 1
+        Minemalength.
+    maxEmaLength : int, default 8
+        Maxemalength.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     df = pd.DataFrame({'close': close, 'volume': volume})
     df['dft'] = np.nan
 

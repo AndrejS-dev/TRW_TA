@@ -5,7 +5,29 @@ from trw_ta import register_outputs
 
 @register_outputs('direction', 'avg', 'avg_p', 'avg_m')
 def emd_trend(source: pd.Series, length: int, aad_mult: float, avg_type: str) -> pd.DataFrame:
-    """https://www.tradingview.com/script/bwbICwa6-EMD-Trend-InvestorUnknown/"""
+    """
+    Emd trend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/bwbICwa6-EMD-Trend-InvestorUnknown/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    length : int
+        Lookback period.
+    aad_mult : float
+        Multiplier.
+    avg_type : str
+        Averaging method name.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     avg = ta.ma(source, length, avg_type)
     emd = ta.emd(source, avg, length)
 

@@ -4,7 +4,33 @@ from trw_ta import register_outputs
 
 @register_outputs('raw_vams', 'zscore_vams', 'smooth_vams')
 def vams_oscillator(close: pd.Series, momentum_period: int = 10, volatility_period: int = 20, zscore_period: int = 100, smoothing_period: int = 3, min_volatility: float = 0.001) -> pd.DataFrame:
-    """https://www.tradingview.com/v/P71BL3mF/"""
+    """
+    Vams oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/P71BL3mF/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    momentum_period : int, default 10
+        Lookback / smoothing period.
+    volatility_period : int, default 20
+        Lookback / smoothing period.
+    zscore_period : int, default 100
+        Lookback / smoothing period.
+    smoothing_period : int, default 3
+        Lookback / smoothing period.
+    min_volatility : float, default 0.001
+        Min volatility.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     close = pd.Series(close)
     log_returns = np.log(close / close.shift(1))
     momentum = log_returns.rolling(momentum_period).mean() * 252

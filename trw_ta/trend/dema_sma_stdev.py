@@ -5,7 +5,33 @@ from trw_ta import register_outputs
 
 @register_outputs('signal')
 def dema_sma_stdev(high: pd.Series, low: pd.Series, source: pd.Series, dema_len: int = 5, sma_len: int = 60, sd_len: int = 20) -> pd.Series:
-    """https://www.tradingview.com/script/WexMT4w3-DEMA-SMA-Standard-Deviation/"""
+    """
+    Dema sma stdev.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/WexMT4w3-DEMA-SMA-Standard-Deviation/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    source : pd.Series
+        Input price or value series.
+    dema_len : int, default 5
+        Lookback / smoothing period.
+    sma_len : int, default 60
+        Lookback / smoothing period.
+    sd_len : int, default 20
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     srcl = high
     srcs = low
 

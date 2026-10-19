@@ -7,7 +7,37 @@ from trw_ta import register_outputs
 def sd_zero_lag(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 12, sd_length: int = 27,
                         upper_sd_factor: float = 1.036, lower_sd_factor: float = 0.982,
                         ma_type: str = "Zero-Lag DEMA") -> pd.DataFrame:
-    """https://www.tradingview.com/script/DUvsybcD-SD-Zero-Lag-The-Don-Killuminati/"""
+    """
+    Sd zero lag.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/DUvsybcD-SD-Zero-Lag-The-Don-Killuminati/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 12
+        Lookback period.
+    sd_length : int, default 27
+        Lookback / smoothing period.
+    upper_sd_factor : float, default 1.036
+        Upper sd factor.
+    lower_sd_factor : float, default 0.982
+        Lower sd factor.
+    ma_type : str, default 'Zero-Lag DEMA'
+        Moving-average type (e.g. SMA, EMA, WMA).
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     src = (high + low + close + close) / 4
 
     if ma_type == "Zero Lag TEMA":

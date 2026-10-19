@@ -6,7 +6,35 @@ from trw_ta import register_outputs
 @register_outputs('line', 'signal')
 def follow_line(high: pd.Series, low: pd.Series, close: pd.Series, atr_period: int = 5, bb_period: int = 21,
                 bb_deviation: float = 1.0, use_atr_filter: bool = True) -> pd.DataFrame:
-    """https://www.tradingview.com/v/UXKo4RaJ/"""
+    """
+    Follow line.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/UXKo4RaJ/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    atr_period : int, default 5
+        Lookback / smoothing period.
+    bb_period : int, default 21
+        Lookback / smoothing period.
+    bb_deviation : float, default 1.0
+        Bb deviation.
+    use_atr_filter : bool, default True
+        Use atr filter.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     sma_close = ta.ma(close, bb_period, 'SMA')
     std = ta.stdev(close, bb_period)
     bb_upper = sma_close + bb_deviation * std

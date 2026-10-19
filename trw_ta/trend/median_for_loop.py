@@ -5,7 +5,33 @@ from trw_ta import register_outputs
 @register_outputs('signal')
 def median_for_loop(source: pd.Series, median_len: int = 2, a: int = 10, b: int = 60,
     threshold_l: int = 40, threshold_s: int = 15) -> pd.Series:
-    """https://www.tradingview.com/script/V63HaPE4-Median-For-Loop-viResearch/"""
+    """
+    Median for loop.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/V63HaPE4-Median-For-Loop-viResearch/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    median_len : int, default 2
+        Lookback / smoothing period.
+    a : int, default 10
+        Numeric input.
+    b : int, default 60
+        Numeric input.
+    threshold_l : int, default 40
+        Threshold l.
+    threshold_s : int, default 15
+        Threshold s.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     subject = source.rolling(window=median_len, center=False).median()
 
     subject = subject.reset_index(drop=True)

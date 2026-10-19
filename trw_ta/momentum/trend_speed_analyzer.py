@@ -5,7 +5,29 @@ from trw_ta import hma
 
 @register_outputs('trendspeed')
 def trend_speed_analyzer(open_: pd.Series, close: pd.Series, max_length: int = 50, accel_multiplier: float = 5.0) -> pd.DataFrame:
-    """https://www.tradingview.com/script/YUAV6jit-Trend-Speed-Analyzer-Zeiierman/"""
+    """
+    Trend speed analyzer.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/YUAV6jit-Trend-Speed-Analyzer-Zeiierman/
+    
+    Parameters
+    ----------
+    open_ : pd.Series
+        Open .
+    close : pd.Series
+        Close price series.
+    max_length : int, default 50
+        Lookback / smoothing period.
+    accel_multiplier : float, default 5.0
+        Multiplier.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     counts_diff = close.diff().fillna(0)
     max_abs_diff = counts_diff.abs().rolling(200, min_periods=1).max()
     counts_diff_norm = (counts_diff + max_abs_diff) / (2 * max_abs_diff + 1e-10)

@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('oscillator')
 def pulsema_oscillator(close: pd.Series, base_ma_len: int = 50, pulse_ma_len: int = 20) -> pd.Series:
-    """https://www.tradingview.com/v/v0qLGdNp/"""
+    """
+    Pulsema oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/v0qLGdNp/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    base_ma_len : int, default 50
+        Lookback / smoothing period.
+    pulse_ma_len : int, default 20
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     base_ma = close.ewm(span=base_ma_len, adjust=False).mean()
     slope = base_ma.diff()
 

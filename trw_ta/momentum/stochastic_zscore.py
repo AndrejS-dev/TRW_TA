@@ -4,13 +4,36 @@ import trw_ta
 from trw_ta import register_outputs
 
 def stoch_k(series: pd.Series, length: int):
+    """
+    Stoch k.
+    
+    Parameters
+    ----------
+    series : pd.Series
+        Input price or value series.
+    length : int
+        Lookback period.
+    """
     lowest = series.rolling(length).min()
     highest = series.rolling(length).max()
     return 100 * (series - lowest) / (highest - lowest)
 
 @register_outputs('zscore', 'smoothed_scaled', 'ltm', 'momentum_shift')
 def stochastic_zscore(source: pd.Series, length: int = 21):
-    """https://www.tradingview.com/v/1k7HqCpx/"""
+    """
+    Stochastic zscore.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/1k7HqCpx/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    length : int, default 21
+        Lookback period.
+    """
     basis = source.rolling(length).mean()
     stdev = source.rolling(length).std()
     zscore = (source - basis) / stdev

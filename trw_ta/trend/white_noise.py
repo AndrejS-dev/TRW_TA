@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('wm')
 def white_noise(source: pd.Series, noise_length: int = 20, use_normalization: bool = True, normalization_lookback: int = 100) -> pd.Series:
-    """https://www.tradingview.com/script/S6qTswV5-White-Noise/"""
+    """
+    White noise.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/S6qTswV5-White-Noise/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    noise_length : int, default 20
+        Lookback / smoothing period.
+    use_normalization : bool, default True
+        Use normalization.
+    normalization_lookback : int, default 100
+        Normalization lookback.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     ma = source.rolling(window=noise_length).mean()
     dist = (source - ma) / ma
 

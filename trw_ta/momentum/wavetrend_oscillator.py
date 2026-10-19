@@ -15,7 +15,39 @@ def wavetrend_oscillator(
     ma_type: str = "EMA",
     ma_len: int = 200,
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/LlQl3rFf-WaveTrend-Oscillator-Divergence-Direction-Detection-Alerts/"""
+    """
+    Wavetrend oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/LlQl3rFf-WaveTrend-Oscillator-Divergence-Direction-Detection-Alerts/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    n1 : int, default 10
+        N1.
+    n2 : int, default 21
+        N2.
+    reaction_wt : int, default 1
+        Reaction wt.
+    smooth : bool, default False
+        Smoothing length.
+    ma_type : str, default 'EMA'
+        Moving-average type (e.g. SMA, EMA, WMA).
+    ma_len : int, default 200
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     for s, name in zip([high, low, close], ["high", "low", "close"]):
         if not isinstance(s, pd.Series):

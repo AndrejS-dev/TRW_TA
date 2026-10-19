@@ -5,7 +5,31 @@ from trw_ta import register_outputs
 @register_outputs('cpm_scaled', 'trend')
 def fdi_cumulative_price_momentum(source: pd.Series, period: int = 48, speed_factor: float = 42,
             upper_threshold: float = 0.65, lower_threshold: float = 0.30) -> pd.DataFrame:
-    """https://www.tradingview.com/script/NI2rdYTo-FDI-Cumulative-Price-Momentum/"""
+    """
+    Fdi cumulative price momentum.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/NI2rdYTo-FDI-Cumulative-Price-Momentum/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    period : int, default 48
+        Lookback period.
+    speed_factor : float, default 42
+        Speed factor.
+    upper_threshold : float, default 0.65
+        Upper threshold.
+    lower_threshold : float, default 0.3
+        Lower threshold.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     df = pd.DataFrame(index=source.index)
     df['source'] = source

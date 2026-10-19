@@ -5,7 +5,33 @@ from trw_ta import register_outputs
 @register_outputs('basis', 'upper', 'lower', 'trend')
 def adaptive_trend_flow(high: pd.Series, low: pd.Series, close: pd.Series,
                         length: int = 10, smooth_len: int = 14, sensitivity: float = 2.0) -> pd.DataFrame:
-    """https://www.tradingview.com/v/1ttpw8M3/"""
+    """
+    Adaptive trend flow.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/1ttpw8M3/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 10
+        Lookback period.
+    smooth_len : int, default 14
+        Smoothing length.
+    sensitivity : float, default 2.0
+        Sensitivity.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     typical = (high + low + close) / 3
 
     fast_ema = typical.ewm(span=length, adjust=False).mean()

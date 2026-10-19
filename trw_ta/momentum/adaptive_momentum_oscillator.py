@@ -3,6 +3,21 @@ import numpy as np
 from trw_ta import register_outputs
 
 def adaptive_momentum_raw(source: pd.Series, length: int = 14) -> pd.Series:
+    """
+    Adaptive momentum raw.
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    length : int, default 14
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     n = len(source)
     amo = pd.Series(np.nan, index=source.index, dtype=float)
 
@@ -20,6 +35,19 @@ def adaptive_momentum_raw(source: pd.Series, length: int = 14) -> pd.Series:
     return amo
 
 def linreg_end_value(s: pd.Series) -> float:
+    """
+    Linreg end value.
+    
+    Parameters
+    ----------
+    s : pd.Series
+        S.
+    
+    Returns
+    -------
+    float
+        Scalar result.
+    """
     if len(s) < 2 or s.isna().all():
         return np.nan
     valid = s.dropna()
@@ -31,6 +59,21 @@ def linreg_end_value(s: pd.Series) -> float:
     return slope * (len(valid) - 1) + intercept
 
 def adaptive_moving_average(series: pd.Series, length: int = 9) -> pd.Series:
+    """
+    Adaptive moving average.
+    
+    Parameters
+    ----------
+    series : pd.Series
+        Input price or value series.
+    length : int, default 9
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     n = len(series)
     ama = pd.Series(np.nan, index=series.index, dtype=float)
 
@@ -63,7 +106,27 @@ def adaptive_moving_average(series: pd.Series, length: int = 9) -> pd.Series:
 
 @register_outputs('amo', 'ama')
 def adaptive_momentum_oscillator(source: pd.Series, length: int = 14, smoothing_length: int = 9) -> pd.DataFrame:
-    """https://www.tradingview.com/script/Uqk8zpzT-Adaptive-Momentum-Oscillator-LuxAlgo/"""
+    """
+    Adaptive momentum oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/Uqk8zpzT-Adaptive-Momentum-Oscillator-LuxAlgo/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    length : int, default 14
+        Lookback period.
+    smoothing_length : int, default 9
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     raw_amo = adaptive_momentum_raw(source, length=length)
     amo = raw_amo.rolling(smoothing_length, min_periods=1).apply(linreg_end_value, raw=False)
     ama = adaptive_moving_average(amo, length=smoothing_length)

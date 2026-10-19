@@ -4,6 +4,21 @@ from trw_ta import register_outputs
 
 def get_ols_weights(length: int, degree: int) -> np.ndarray:
 
+    """
+    Get ols weights.
+    
+    Parameters
+    ----------
+    length : int
+        Lookback period.
+    degree : int
+        Degree.
+    
+    Returns
+    -------
+    np.ndarray
+        Function result.
+    """
     if length < 2 or degree < 1:
         return np.ones(length) / length
 
@@ -28,6 +43,23 @@ def get_ols_weights(length: int, degree: int) -> np.ndarray:
 
 
 def apply_smoothing_once(src: pd.Series, length: int, method: str = "EMA") -> pd.Series:
+    """
+    Apply smoothing once.
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    length : int
+        Lookback period.
+    method : str, default 'EMA'
+        Method.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     if method == "None" or length <= 1:
         return src
 
@@ -81,7 +113,33 @@ def apply_smoothing_once(src: pd.Series, length: int, method: str = "EMA") -> pd
 @register_outputs('prma')
 def polynomial_regression_ma(source: pd.Series, period: int = 100, degree: float = 4.0,
     smooth_type: str = "EMA", smooth_len: int = 5, smooth_iterations: int = 1) -> pd.DataFrame:
-    """https://www.tradingview.com/script/3aez8sIq-Polynomial-Regression-Moving-Average-PRMA/"""
+    """
+    Polynomial regression ma.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/3aez8sIq-Polynomial-Regression-Moving-Average-PRMA/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    period : int, default 100
+        Lookback period.
+    degree : float, default 4.0
+        Degree.
+    smooth_type : str, default 'EMA'
+        Smooth type.
+    smooth_len : int, default 5
+        Smoothing length.
+    smooth_iterations : int, default 1
+        Smooth iterations.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     n = len(source)
     if n < period:
         return pd.DataFrame({'prma': np.nan}, index=source.index)

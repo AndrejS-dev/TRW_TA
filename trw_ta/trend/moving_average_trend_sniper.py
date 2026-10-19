@@ -5,7 +5,29 @@ from trw_ta import register_outputs
 
 @register_outputs('signal', 'mats_line')
 def moving_average_trend_sniper(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 30) -> pd.Series:
-    """https://www.tradingview.com/script/iwEyBE2d-Moving-Average-Trend-Sniper-ChartPrime/"""
+    """
+    Moving average trend sniper.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/iwEyBE2d-Moving-Average-Trend-Sniper-ChartPrime/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 30
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     # Input validation
     if not all(isinstance(s, pd.Series) for s in [high, low, close]):
         raise TypeError("Inputs must be pandas Series")

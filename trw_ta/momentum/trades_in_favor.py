@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('tif')
 def trades_in_favor(close: pd.Series, volume: pd.Series, length: int = 20, smoothing: int = 5) -> pd.Series:
-    """https://www.tradingview.com/script/wvDsCkvr-Trades-in-Favor/"""
+    """
+    Trades in favor.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/wvDsCkvr-Trades-in-Favor/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    length : int, default 20
+        Lookback period.
+    smoothing : int, default 5
+        Smoothing.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     price_change = close - close.shift(1)
     volume_weighted = volume * np.abs(price_change)
 

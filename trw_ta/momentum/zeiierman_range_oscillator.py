@@ -11,7 +11,31 @@ def zeiierman_range_oscillator(
     length: int = 50,
     mult: float = 2.0,
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/mlL8CpJq-Range-Oscillator-Zeiierman/"""
+    """
+    Zeiierman range oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/mlL8CpJq-Range-Oscillator-Zeiierman/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    length : int, default 50
+        Lookback period.
+    mult : float, default 2.0
+        Band or ATR multiplier.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     length = int(max(1, length))
     mult = float(mult)

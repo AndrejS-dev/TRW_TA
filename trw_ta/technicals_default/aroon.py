@@ -4,6 +4,23 @@ from trw_ta import register_outputs
 
 @register_outputs('up', 'down')
 def aroon(high: pd.Series, low: pd.Series, length: int = 14) -> pd.DataFrame:
+    """
+    Aroon Indicator.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    length : int, default 14
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     def bars_since_max(x):
         return length - 1 - np.argmax(x)
 

@@ -4,6 +4,21 @@ from trw_ta import register_outputs
 
 @register_outputs('slope')
 def linear_regression_slope(series: pd.Series, length: int = 14) -> pd.Series:
+    """
+    Linear regression slope.
+    
+    Parameters
+    ----------
+    series : pd.Series
+        Input price or value series.
+    length : int, default 14
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     x = np.arange(length)
     x_mean = x.mean()
     denominator = ((x - x_mean)**2).sum()

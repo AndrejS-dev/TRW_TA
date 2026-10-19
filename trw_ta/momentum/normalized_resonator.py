@@ -6,7 +6,31 @@ from trw_ta import register_outputs
 @register_outputs('oscillator', 'signal')
 def normalized_resonator(source: pd.Series, center_period: int = 100, bandwidth: float = 0.5,
     lookback_multiplier: float = 1.0, signal_length: int = 9) -> pd.DataFrame:
-    """https://www.tradingview.com/script/vQzh7vky-Normalized-Resonator-LuxAlgo/"""
+    """
+    Normalized resonator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/vQzh7vky-Normalized-Resonator-LuxAlgo/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    center_period : int, default 100
+        Lookback / smoothing period.
+    bandwidth : float, default 0.5
+        Bandwidth.
+    lookback_multiplier : float, default 1.0
+        Multiplier.
+    signal_length : int, default 9
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     n = len(source)
     if n < 3:
         return pd.DataFrame(index=source.index, columns=['oscillator', 'signal'])

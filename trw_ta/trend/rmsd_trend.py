@@ -5,7 +5,29 @@ from trw_ta import register_outputs
 
 @register_outputs('direction', 'avg', 'avg_p', 'avg_m')
 def rmsd_trend(source: pd.Series, length: int, aad_mult: float, avg_type: str) -> pd.DataFrame:
-    """https://www.tradingview.com/script/7GzOiU0f-RMSD-Trend-InvestorUnknown/"""
+    """
+    Rmsd trend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/7GzOiU0f-RMSD-Trend-InvestorUnknown/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    length : int
+        Lookback period.
+    aad_mult : float
+        Multiplier.
+    avg_type : str
+        Averaging method name.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     avg = ta.ma(source, length, avg_type)
     rmsd = ta.rmsd(source, avg, length)
 

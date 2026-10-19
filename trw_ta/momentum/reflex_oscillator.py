@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('reflex_osc')
 def reflex_oscillator(series: pd.Series, ss_period: float = 8.0, reflex_period: int = 20, post_smooth_period: float = 33.0) -> pd.Series:
-    """https://www.tradingview.com/v/NI17VkdU/"""
+    """
+    Reflex oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/NI17VkdU/
+    
+    Parameters
+    ----------
+    series : pd.Series
+        Input price or value series.
+    ss_period : float, default 8.0
+        Lookback / smoothing period.
+    reflex_period : int, default 20
+        Lookback / smoothing period.
+    post_smooth_period : float, default 33.0
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     SQRT2xPI = np.sqrt(8.0) * np.arcsin(1.0)
     alpha = SQRT2xPI / ss_period
     beta = np.exp(-alpha)

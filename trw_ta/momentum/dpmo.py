@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('PMO', 'PMO_signal', 'histogram')
 def dpmo(close: pd.Series, length1: int = 35, length2: int = 20, siglength: int = 10,) -> pd.DataFrame:
-    """https://www.tradingview.com/v/5e9WBJwE/"""
+    """
+    Dpmo.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/5e9WBJwE/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    length1 : int, default 35
+        Length1.
+    length2 : int, default 20
+        Length2.
+    siglength : int, default 10
+        Siglength.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     def csf(src: pd.Series, length: int) -> pd.Series:
         alpha = 2 / length
         out = pd.Series(index=src.index, dtype=float)

@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('direction', 'median', 'med_p', 'med_m')
 def mad_trend(source: pd.Series, length: int, mad_mult: float) -> pd.DataFrame:
-    """https://www.tradingview.com/script/nhyCYGKn-MadTrend-InvestorUnknown/"""
+    """
+    Mad trend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/nhyCYGKn-MadTrend-InvestorUnknown/
+    
+    Parameters
+    ----------
+    source : pd.Series
+        Input price or value series.
+    length : int
+        Lookback period.
+    mad_mult : float
+        Multiplier.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     median_ = ta.median(source, length)
     mad = ta.mad(source, length)
 

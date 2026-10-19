@@ -4,7 +4,31 @@ from trw_ta import register_outputs
 
 @register_outputs('mid', 'top', 'bot')
 def pure_price_zone_flow(high: pd.Series, low: pd.Series, close: pd.Series, len: int = 20, atrMult: float = 1.0) -> pd.DataFrame:
-    """https://www.tradingview.com/script/87oQcPHN-Pure-Price-Zone-Flow/"""
+    """
+    Pure price zone flow.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/87oQcPHN-Pure-Price-Zone-Flow/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    len : int, default 20
+        Lookback period (deprecated alias for length).
+    atrMult : float, default 1.0
+        Atrmult.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     if not all(isinstance(s, pd.Series) for s in [high, low, close]):
         raise TypeError("Inputs must be pandas Series")
     if not (high.index.equals(low.index) and low.index.equals(close.index)):

@@ -5,7 +5,31 @@ from trw_ta import register_outputs
 
 @register_outputs('cl', 'sig')
 def twiggs_money_flow(high: pd.Series, low: pd.Series, close: pd.Series, volume: pd.Series, length: int = 21) -> pd.DataFrame:
-    """https://www.tradingview.com/script/Z9jDy5JN-Twiggs-Go-Money-Flow-Enhanced-KingThies/"""
+    """
+    Twiggs money flow.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/Z9jDy5JN-Twiggs-Go-Money-Flow-Enhanced-KingThies/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    length : int, default 21
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     tr_high = pd.concat([close.shift(1), high], axis=1).max(axis=1)
     tr_low = pd.concat([close.shift(1), low], axis=1).min(axis=1)
     tr_range = tr_high - tr_low

@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('kama', 'signal')
 def kama_trend_flip(src: pd.Series, er_len: int = 50, fast_pow: int = 2, slow_pow: int = 30) -> pd.DataFrame:
-    """https://www.tradingview.com/script/fNAmA2Gz-KAMA-Trend-Flip-SightLing-Labs/"""
+    """
+    Kama trend flip.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/fNAmA2Gz-KAMA-Trend-Flip-SightLing-Labs/
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    er_len : int, default 50
+        Lookback / smoothing period.
+    fast_pow : int, default 2
+        Fast pow.
+    slow_pow : int, default 30
+        Slow pow.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     if not isinstance(src, pd.Series):
         raise TypeError("Source must be a pandas Series")
     if src.isna().any():

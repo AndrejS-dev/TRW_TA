@@ -4,7 +4,26 @@ from trw_ta import register_outputs
 
 @register_outputs('PSO')
 def premier_stochastic_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, stochlen=8, smoothlen=25):
-    """https://www.tradingview.com/script/xewuyTA1-Indicator-Premier-Stochastic-Oscillator/"""
+    """
+    Premier stochastic oscillator.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/xewuyTA1-Indicator-Premier-Stochastic-Oscillator/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    stochlen : Any, default 8
+        Stochlen.
+    smoothlen : Any, default 25
+        Smoothlen.
+    """
     lowest_low = low.rolling(stochlen).min()
     highest_high = high.rolling(stochlen).max()
     stoch_k = 100 * (close - lowest_low) / (highest_high - lowest_low)

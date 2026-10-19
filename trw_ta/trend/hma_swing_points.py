@@ -4,7 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('signal')
 def hma_swing_points(high: pd.Series, low: pd.Series, x: int = 30, length: int = 5) -> pd.Series:
-    """https://www.tradingview.com/script/5uXm51B0-Hma-Swing-Points-viResearch/"""
+    """
+    Hma swing points.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/5uXm51B0-Hma-Swing-Points-viResearch/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    x : int, default 30
+        Numeric input.
+    length : int, default 5
+        Lookback period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     xy = ta.hma(high, length)
     xz = ta.hma(low, length)
 

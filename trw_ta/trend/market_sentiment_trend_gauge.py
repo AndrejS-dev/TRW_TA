@@ -16,7 +16,43 @@ def market_sentiment_trend_gauge(
     bb_length: int = 20,
     bb_mult: float = 2.0
 ) -> pd.Series:
-    """https://www.tradingview.com/script/OSdqOjNR-Market-Sentiment-Trend-Gauge-LevelUp/"""
+    """
+    Market sentiment trend gauge.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/OSdqOjNR-Market-Sentiment-Trend-Gauge-LevelUp/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    benchmark_close : pd.Series
+        Benchmark close.
+    rsi_length : int, default 14
+        Lookback / smoothing period.
+    fast_intra : int, default 10
+        Fast intra.
+    slow_intra : int, default 21
+        Slow intra.
+    fast_daily : int, default 5
+        Fast daily.
+    slow_daily : int, default 20
+        Slow daily.
+    fast_week : int, default 3
+        Fast week.
+    slow_week : int, default 10
+        Slow week.
+    bb_length : int, default 20
+        Lookback / smoothing period.
+    bb_mult : float, default 2.0
+        Multiplier.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     # RSI score
     delta = close.diff()
     gain = np.where(delta > 0, delta, 0)

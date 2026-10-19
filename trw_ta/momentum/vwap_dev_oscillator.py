@@ -14,6 +14,39 @@ def vwap_dev_oscillator(
 ) -> pd.DataFrame:
 
     # --- Input Price Reference ---
+    """
+    Vwap dev oscillator.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    lookback : int, default 20
+        Lookback.
+    use_close : bool, default False
+        Use close.
+    dev_mode : str, default 'Absolute'
+        Dev mode.
+    z_win : int, default 50
+        Z win.
+    pct_vol_lookback : int, default 100
+        Pct vol lookback.
+    pct_min_sigma : float, default 0.1
+        Pct min sigma.
+    abs_vol_lookback : int, default 100
+        Abs vol lookback.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     price_ref = close if use_close else (high + low + close) / 3
 
     # --- VWAP Calculation ---

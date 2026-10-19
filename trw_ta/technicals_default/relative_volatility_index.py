@@ -4,6 +4,23 @@ from trw_ta import register_outputs
 
 @register_outputs('rvi')
 def relative_volatility_index(src: pd.Series, length: int = 10, ema_len: int = 14) -> pd.Series:
+    """
+    Relative Volatility Index (RVI).
+    
+    Parameters
+    ----------
+    src : pd.Series
+        Input price or value series.
+    length : int, default 10
+        Lookback period.
+    ema_len : int, default 14
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     stddev = src.rolling(length).std()
     change = src.diff()
 

@@ -4,6 +4,29 @@ from trw_ta import register_outputs
 
 @register_outputs('sar')
 def sar(high: pd.Series, low: pd.Series, close: pd.Series, start=0.02, inc=0.02, max_val=0.2) -> pd.Series:
+    """
+    Parabolic SAR.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    start : Any, default 0.02
+        Start.
+    inc : Any, default 0.02
+        Inc.
+    max_val : Any, default 0.2
+        Max val.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     sar = np.full(len(close), np.nan)
     max_min = np.nan
     acc = np.nan

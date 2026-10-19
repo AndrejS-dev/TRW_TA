@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('it', 'lag')
 def ehlers_instantaneous_trend(high: pd.Series, low: pd.Series, alpha: float = 0.07) -> pd.DataFrame:
-    """https://www.tradingview.com/v/DaHLcICg/"""
+    """
+    Ehlers instantaneous trend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/DaHLcICg/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    alpha : float, default 0.07
+        Alpha.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     src = (high + low) / 2
     it = np.full(len(src), np.nan)
 

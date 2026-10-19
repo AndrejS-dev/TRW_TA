@@ -8,7 +8,39 @@ def velocity_pressure_index(
     velocity_len: int = 14, pressure_len: int = 21, smooth_factor: int = 3,
     norm_len: int = 50
 ) -> pd.DataFrame:
-    """https://www.tradingview.com/script/1jOINpEP-Velocity-Pressure-Index-AlphaNatt/"""
+    """
+    Velocity pressure index.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/1jOINpEP-Velocity-Pressure-Index-AlphaNatt/
+    
+    Parameters
+    ----------
+    open_ : pd.Series
+        Open .
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    volume : pd.Series
+        Volume series.
+    velocity_len : int, default 14
+        Lookback / smoothing period.
+    pressure_len : int, default 21
+        Lookback / smoothing period.
+    smooth_factor : int, default 3
+        Smooth factor.
+    norm_len : int, default 50
+        Lookback / smoothing period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     typical = (high + low + close) / 3
     price_change = typical.diff()
     velocity = price_change.rolling(velocity_len).apply(

@@ -4,6 +4,23 @@ from trw_ta import register_outputs
 
 @register_outputs('fish1', 'fish2')
 def fisher_transform(high: pd.Series, low: pd.Series, length: int = 9) -> pd.DataFrame:
+    """
+    Fisher Transform.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    length : int, default 9
+        Lookback period.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     hl2 = (high + low) / 2
     high_ = hl2.rolling(window=length).max()
     low_ = hl2.rolling(window=length).min()

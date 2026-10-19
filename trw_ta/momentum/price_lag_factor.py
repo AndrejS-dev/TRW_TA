@@ -4,7 +4,29 @@ from trw_ta import register_outputs, hma
 
 @register_outputs('plf_smooth')
 def price_lag_factor(close: pd.Series, long_period: int = 50, short_period: int = 14, smoothing: int = 3) -> pd.DataFrame:
-    """https://www.tradingview.com/script/mSwWP8uu-Price-Lag-Factor-PLF/"""
+    """
+    Price lag factor.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/mSwWP8uu-Price-Lag-Factor-PLF/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    long_period : int, default 50
+        Lookback / smoothing period.
+    short_period : int, default 14
+        Lookback / smoothing period.
+    smoothing : int, default 3
+        Smoothing.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     def zscore_component(src: pd.Series, length: int) -> pd.Series:
         mean = src.rolling(length).mean()

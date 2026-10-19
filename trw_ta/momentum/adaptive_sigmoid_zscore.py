@@ -7,7 +7,45 @@ from trw_ta import register_outputs
 def adaptive_sigmoid_zscore(high: pd.Series, low: pd.Series, source: pd.Series, lookback: int = 57, volatility_period: int = 41,
     base_steepness: float = 5.0, base_midpoint: float = 0.1, z_period: int = 40, ma_type: str = "HMA", ma_lookback: int = 2,
     upper_threshold: float = 1.2, lower_threshold: float = -0.2) -> pd.DataFrame:
-    """https://www.tradingview.com/script/aqF5Y7Wj-Adaptive-Sigmoid-Z-Score/"""
+    """
+    Adaptive sigmoid zscore.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/script/aqF5Y7Wj-Adaptive-Sigmoid-Z-Score/
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    source : pd.Series
+        Input price or value series.
+    lookback : int, default 57
+        Lookback.
+    volatility_period : int, default 41
+        Lookback / smoothing period.
+    base_steepness : float, default 5.0
+        Base steepness.
+    base_midpoint : float, default 0.1
+        Base midpoint.
+    z_period : int, default 40
+        Lookback / smoothing period.
+    ma_type : str, default 'HMA'
+        Moving-average type (e.g. SMA, EMA, WMA).
+    ma_lookback : int, default 2
+        Ma lookback.
+    upper_threshold : float, default 1.2
+        Upper threshold.
+    lower_threshold : float, default -0.2
+        Lower threshold.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
 
     atr = high.rolling(volatility_period).max() - low.rolling(volatility_period).min()
     atr_avg = atr.rolling(volatility_period).mean()

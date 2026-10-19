@@ -3,6 +3,27 @@ from trw_ta import register_outputs
 
 @register_outputs('supertrend', 'direction')
 def supertrend(high: pd.Series, low: pd.Series, close: pd.Series, atr_period: int = 10, factor: float = 3.0) -> pd.DataFrame:
+    """
+    Supertrend.
+    
+    Parameters
+    ----------
+    high : pd.Series
+        High price series.
+    low : pd.Series
+        Low price series.
+    close : pd.Series
+        Close price series.
+    atr_period : int, default 10
+        Lookback / smoothing period.
+    factor : float, default 3.0
+        Factor.
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame of indicator columns.
+    """
     tr1 = high - low
     tr2 = (high - close.shift()).abs()
     tr3 = (low - close.shift()).abs()

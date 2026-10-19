@@ -4,7 +4,27 @@ from trw_ta import register_outputs
 
 @register_outputs('signal')
 def deb_supertrend(close: pd.Series, length: int = 20, mult: float = 2.0) -> pd.Series:
-    """https://www.tradingview.com/v/Ja7PuNY9/"""
+    """
+    Deb supertrend.
+    
+    Python conversion of the TradingView / Pine Script indicator.
+    
+    Source: https://www.tradingview.com/v/Ja7PuNY9/
+    
+    Parameters
+    ----------
+    close : pd.Series
+        Close price series.
+    length : int, default 20
+        Lookback period.
+    mult : float, default 2.0
+        Band or ATR multiplier.
+    
+    Returns
+    -------
+    pd.Series
+        Series of computed values.
+    """
     price = close
     ma = price.rolling(window=length).mean()
     std = price.rolling(window=length).std()
