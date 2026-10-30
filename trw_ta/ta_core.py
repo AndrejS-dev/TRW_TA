@@ -978,6 +978,28 @@ def gaussian_ma(src: pd.Series, length: int = 100) -> pd.Series:
         result.append(smoothed)
     return pd.Series(result, index=src.index)
 
+def valid_data_prefix(*series: pd.Series) -> tuple[tuple[pd.Series, ...], pd.Index]:
+    """
+    Truncate inputs to the last bar where all series are non-NaN.
+
+    Charting tools often append future bars with NaN prices for projection.
+    Compute on the returned truncated series, then ``.reindex(full_index)``
+    so trailing future bars remain NaN in the output.
+    """
+    if not series:
+        raise ValueError("At least one series is required")
+    full_index = series[0].index
+    for s in series[1:]:
+        if not s.index.equals(full_index):
+            raise ValueError("All series must share the same index")
+    valid = pd.concat(list(series), axis=1).notna().all(axis=1)
+    if not valid.any():
+        raise ValueError("No non-NaN rows available for calculation")
+    last_valid = valid[valid].index[-1]
+    truncated = tuple(s.loc[:last_valid].copy() for s in series)
+    return truncated, full_index
+
+
 @register_outputs('rescaled')
 def rescale(src: pd.Series, old_min: float, old_max: float, new_min: float, new_max: float) -> pd.Series:
     """

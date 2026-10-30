@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('cl')
 def continuation_index(src: pd.Series, gamma: float = 0.8, order: int = 8, length: int = 40) -> pd.DataFrame:
@@ -29,10 +30,9 @@ def continuation_index(src: pd.Series, gamma: float = 0.8, order: int = 8, lengt
     """
     if not isinstance(src, pd.Series):
         raise TypeError("Source must be a pandas Series")
-    if src.isna().any():
-        raise ValueError("Source must not contain NaN values")
+    (src,), full_index = valid_data_prefix(src)
     if len(src) < max(length, 4):
-        raise ValueError(f"Source must have at least {max(length, 4)} rows")
+        raise ValueError(f"Source must have at least {max(length, 4)} non-NaN rows")
     if not 0 <= gamma <= 1:
         raise ValueError("Gamma must be between 0 and 1")
     if not 1 <= order <= 10:
@@ -56,7 +56,7 @@ def continuation_index(src: pd.Series, gamma: float = 0.8, order: int = 8, lengt
                              (c1 + c3) * src.iloc[i-2] + \
                              c2 * (us.iloc[i-1] if not np.isnan(us.iloc[i-1]) else src.iloc[i-1]) + \
                              c3 * (us.iloc[i-2] if not np.isnan(us.iloc[i-2]) else src.iloc[i-2])
-        return us.fillna(method='ffill')
+        return us.ffill()
 
     def laguerre_filter(src, gamma, order, length):
         lg = [ultimate_smoother(src, length)]  # L0 term
@@ -66,7 +66,7 @@ def continuation_index(src: pd.Series, gamma: float = 0.8, order: int = 8, lengt
             curr.iloc[0] = prev.iloc[0]
             for i in range(1, len(src)):
                 curr.iloc[i] = gamma * (curr.iloc[i-1] - prev.iloc[i-1]) + prev.iloc[i-1]
-            lg.append(curr.fillna(method='ffill'))
+            lg.append(curr.ffill())
         return sum(lg) / order
 
     us = ultimate_smoother(src, int(length / 2))
@@ -82,4 +82,4 @@ def continuation_index(src: pd.Series, gamma: float = 0.8, order: int = 8, lengt
 
     return pd.DataFrame({
         'cl': ci
-    }, index=src.index)
+    }, index=src.index).reindex(full_index)

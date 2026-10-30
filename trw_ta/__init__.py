@@ -76,6 +76,7 @@ from .ta_core import (
     zlag_tema,
     gaussian_ma,
     rescale,
+    valid_data_prefix,
 )
 
 # ---------------------------------------------------------------------------
@@ -380,6 +381,7 @@ __all__ = [
     "zlag_tema",
     "gaussian_ma",
     "rescale",
+    "valid_data_prefix",
     # technicals_default
     "accumulation_distribution",
     "aroon",

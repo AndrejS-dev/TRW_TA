@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('kama', 'signal')
 def gaussian_mixture_model(close: pd.Series, training_period: int = 100, n_components: int = 3, momentum_length: int = 14, 
@@ -35,10 +36,9 @@ def gaussian_mixture_model(close: pd.Series, training_period: int = 100, n_compo
     # Input validation
     if not isinstance(close, pd.Series):
         raise TypeError("Close must be a pandas Series")
-    if close.isna().any():
-        raise ValueError("Close must not contain NaN values")
+    (close,), full_index = valid_data_prefix(close)
     if len(close) < max(training_period, momentum_length, 20):
-        raise ValueError(f"Close must have at least {max(training_period, momentum_length, 20)} rows")
+        raise ValueError(f"Close must have at least {max(training_period, momentum_length, 20)} non-NaN rows")
     if training_period < 50 or training_period > 500:
         raise ValueError("Training period must be between 50 and 500")
     if n_components < 2 or n_components > 5:
@@ -131,9 +131,9 @@ def gaussian_mixture_model(close: pd.Series, training_period: int = 100, n_compo
         elif kama.iloc[i] < 0 and kama.iloc[i-1] >= 0:  # Crossunder below 0
             last_signal = -1
         signal.iloc[i] = last_signal
-    signal = signal.fillna(method='ffill').fillna(0)
+    signal = signal.ffill().fillna(0)
 
     return pd.DataFrame({
         'kama': kama,
         'signal': signal
-    }, index=close.index)
+    }, index=close.index).reindex(full_index)

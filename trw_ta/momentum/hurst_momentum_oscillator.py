@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('oscillator', 'signal')
 def hurst_momentum_oscillator(close: pd.Series, hurst_length: int = 20, momentum_length: int = 14, smoothing: int = 3) -> pd.DataFrame:
@@ -30,10 +31,9 @@ def hurst_momentum_oscillator(close: pd.Series, hurst_length: int = 20, momentum
     # Input validation
     if not isinstance(close, pd.Series):
         raise TypeError("Close must be a pandas Series")
-    if close.isna().any():
-        raise ValueError("Close must not contain NaN values")
+    (close,), full_index = valid_data_prefix(close)
     if len(close) < max(hurst_length, momentum_length, 100):
-        raise ValueError(f"Close must have at least {max(hurst_length, momentum_length, 100)} rows")
+        raise ValueError(f"Close must have at least {max(hurst_length, momentum_length, 100)} non-NaN rows")
     if hurst_length < 10 or hurst_length > 50:
         raise ValueError("Hurst length must be between 10 and 50")
     if momentum_length < 5 or momentum_length > 30:
@@ -93,9 +93,9 @@ def hurst_momentum_oscillator(close: pd.Series, hurst_length: int = 20, momentum
         elif cl.iloc[i] < 0 and cl.iloc[i-1] >= 0:  # Crossunder below 0
             last_signal = -1
         sig.iloc[i] = last_signal
-    sig = sig.fillna(method='ffill').fillna(0)
+    sig = sig.ffill().fillna(0)
 
     return pd.DataFrame({
         'cl': cl,
         'sig': sig
-    }, index=close.index)
+    }, index=close.index).reindex(full_index)

@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('signalLine', 'support', 'resistance')
 def trendlines_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 5, memory: int = 10, 
@@ -46,10 +47,9 @@ def trendlines_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, len
         raise TypeError("Inputs must be pandas Series")
     if not (high.index.equals(low.index) and low.index.equals(close.index)):
         raise ValueError("Input Series must have the same index")
-    if high.isna().any() or low.isna().any() or close.isna().any():
-        raise ValueError("Input Series must not contain NaN values")
+    (high, low, close), full_index = valid_data_prefix(high, low, close)
     if len(high) < length * 2 + 1:
-        raise ValueError(f"Input Series must have at least {length * 2 + 1} rows")
+        raise ValueError(f"Input Series must have at least {length * 2 + 1} non-NaN rows")
     if length < 1 or memory < 1 or data_smoothing_length < 2 or signal_smoothing_length < 2:
         raise ValueError("Length parameters must be positive, smoothing lengths >= 2")
 
@@ -115,8 +115,8 @@ def trendlines_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, len
     phx1 = 0
     plx1 = 0
 
-    ph = pivothigh(high, length, length).fillna(method='ffill').fillna(high)
-    pl = pivotlow(low, length, length).fillna(method='ffill').fillna(low)
+    ph = pivothigh(high, length, length).ffill().fillna(high)
+    pl = pivotlow(low, length, length).ffill().fillna(low)
 
     n = pd.Series(range(len(high)), index=high.index)
     sup_sum = pd.Series(0.0, index=high.index)
@@ -165,4 +165,4 @@ def trendlines_oscillator(high: pd.Series, low: pd.Series, close: pd.Series, len
         'signalLine': signal_line,
         'support': smooth_support,
         'resistance': smooth_resistance
-    }, index=close.index)
+    }, index=close.index).reindex(full_index)

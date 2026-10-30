@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('kama', 'signal')
 def kama_trend_flip(src: pd.Series, er_len: int = 50, fast_pow: int = 2, slow_pow: int = 30) -> pd.DataFrame:
@@ -29,10 +30,9 @@ def kama_trend_flip(src: pd.Series, er_len: int = 50, fast_pow: int = 2, slow_po
     """
     if not isinstance(src, pd.Series):
         raise TypeError("Source must be a pandas Series")
-    if src.isna().any():
-        raise ValueError("Source must not contain NaN values")
+    (src,), full_index = valid_data_prefix(src)
     if len(src) < er_len:
-        raise ValueError(f"Source must have at least {er_len} rows")
+        raise ValueError(f"Source must have at least {er_len} non-NaN rows")
     if er_len < 1 or fast_pow < 1 or slow_pow < 1:
         raise ValueError("er_len, fast_pow, and slow_pow must be >= 1")
 
@@ -47,7 +47,7 @@ def kama_trend_flip(src: pd.Series, er_len: int = 50, fast_pow: int = 2, slow_po
     kama.iloc[0] = src.iloc[0]  # Initialize first value
     for i in range(1, len(src)):
         kama.iloc[i] = kama.iloc[i-1] + (sc.iloc[i] ** 2) * (src.iloc[i] - kama.iloc[i-1]) if not np.isnan(kama.iloc[i-1]) else src.iloc[i]
-    kama = kama.fillna(method='ffill')
+    kama = kama.ffill()
 
     trend_up = kama > kama.shift(1)
     trend_dn = kama < kama.shift(1)
@@ -59,9 +59,9 @@ def kama_trend_flip(src: pd.Series, er_len: int = 50, fast_pow: int = 2, slow_po
         elif trend_dn.iloc[i] and not trend_dn.iloc[i-1]:
             last_signal = -1
         signal.iloc[i] = last_signal
-    signal = signal.fillna(method='ffill').fillna(0)
+    signal = signal.ffill().fillna(0)
 
     return pd.DataFrame({
         'kama': kama,
         'signal': signal
-    }, index=src.index)
+    }, index=src.index).reindex(full_index)
