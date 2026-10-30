@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import trw_ta as ta
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('cl', 'sig')
 def fractal_strength_oscillator(
@@ -49,14 +50,13 @@ def fractal_strength_oscillator(
 
     if not isinstance(close, pd.Series):
         raise TypeError("close must be a pandas Series")
-    if close.isna().any():
-        raise ValueError("close contains NaN")
-    if N < 2 or len(close) < N:
-        raise ValueError(f"close must contain at least {N} rows")
-    if rsi_length < 1 or ma_length < 1:
-        raise ValueError("Lengths must be >= 1")
     if volume is not None and len(volume) != len(close):
         raise ValueError("volume must have the same length as close")
+    (close,), full_index = valid_data_prefix(close)
+    if N < 2 or len(close) < N:
+        raise ValueError(f"close must contain at least {N} non-NaN rows")
+    if rsi_length < 1 or ma_length < 1:
+        raise ValueError("Lengths must be >= 1")
 
     hh = close.rolling(window=N, min_periods=1).max()
     ll = close.rolling(window=N, min_periods=1).min()
@@ -79,7 +79,7 @@ def fractal_strength_oscillator(
 
     # final FDI
     fdi = 1 + (np.log(fdi_len.replace(0, np.nan)) + np.log(2)) / np.log(2 * N)
-    fdi = fdi.fillna(method="ffill").fillna(1)  # first values → neutral
+    fdi = fdi.ffill().fillna(1)  # first values → neutral
 
     delta = close.diff()
     up = delta.clip(lower=0)
@@ -113,4 +113,4 @@ def fractal_strength_oscillator(
             "sig": Trend,   # 1 / -1 / 0
         },
         index=close.index,
-    )
+    ).reindex(full_index)

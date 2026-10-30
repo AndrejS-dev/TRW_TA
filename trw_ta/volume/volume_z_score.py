@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('zs', 'signal')
 def volume_z_score(volume: pd.Series, lookback: int = 50, use_log: bool = False, sma_type: str = "SMA", 
@@ -39,12 +40,11 @@ def volume_z_score(volume: pd.Series, lookback: int = 50, use_log: bool = False,
     # Input validation
     if not isinstance(volume, pd.Series):
         raise TypeError("Volume must be a pandas Series")
-    if volume.isna().any():
-        raise ValueError("Volume must not contain NaN values")
+    (volume,), full_index = valid_data_prefix(volume)
     if volume.le(0).any() and use_log:
         raise ValueError("Volume must be positive when use_log is True")
     if len(volume) < lookback:
-        raise ValueError(f"Volume must have at least {lookback} rows")
+        raise ValueError(f"Volume must have at least {lookback} non-NaN rows")
     if lookback < 2:
         raise ValueError("Lookback must be at least 2")
     if smoothing < 1:
@@ -82,9 +82,9 @@ def volume_z_score(volume: pd.Series, lookback: int = 50, use_log: bool = False,
         else:
             last_signal = 0  # Reset to 0 when not crossing thresholds
         sig.iloc[i] = last_signal
-    sig = sig.fillna(method='ffill').fillna(0)
+    sig = sig.ffill().fillna(0)
 
     return pd.DataFrame({
         'zs': zs,
         'sig': sig
-    }, index=volume.index)
+    }, index=volume.index).reindex(full_index)

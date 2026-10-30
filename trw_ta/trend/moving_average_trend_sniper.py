@@ -2,9 +2,10 @@ import pandas as pd
 import numpy as np
 import trw_ta as ta
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('signal', 'mats_line')
-def moving_average_trend_sniper(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 30) -> pd.Series:
+def moving_average_trend_sniper(high: pd.Series, low: pd.Series, close: pd.Series, length: int = 30) -> pd.DataFrame:
     """
     Moving average trend sniper.
     
@@ -25,18 +26,17 @@ def moving_average_trend_sniper(high: pd.Series, low: pd.Series, close: pd.Serie
     
     Returns
     -------
-    pd.Series
-        Series of computed values.
+    pd.DataFrame
+        DataFrame of indicator columns.
     """
     # Input validation
     if not all(isinstance(s, pd.Series) for s in [high, low, close]):
         raise TypeError("Inputs must be pandas Series")
     if not (high.index.equals(low.index) and low.index.equals(close.index)):
         raise ValueError("Input Series must have the same index")
-    if high.isna().any() or low.isna().any() or close.isna().any():
-        raise ValueError("Input Series must not contain NaN values")
+    (high, low, close), full_index = valid_data_prefix(high, low, close)
     if len(high) < max(length, 10):
-        raise ValueError(f"Input Series must have at least {max(length, 10)} rows")
+        raise ValueError(f"Input Series must have at least {max(length, 10)} non-NaN rows")
     if length < 2:
         raise ValueError("Length must be at least 2")
 
@@ -45,8 +45,8 @@ def moving_average_trend_sniper(high: pd.Series, low: pd.Series, close: pd.Serie
         slope = (close - close.shift(10)) / (atr * 10).replace(0, 1)  # Avoid division by zero
         angle_rad = np.arctan2(slope, 1)
         degrees = angle_rad * 180 / np.pi
-        source = pd.Series(np.where(degrees > 0, high, low)).rolling(window=2, min_periods=1).mean()
-        return source.fillna(method='ffill')
+        source = pd.Series(np.where(degrees > 0, high, low), index=close.index).rolling(window=2, min_periods=1).mean()
+        return source.ffill()
 
     def mats(source, length):
         higher_high = (ta.highest(high, length).diff() > 0).fillna(False)
@@ -75,9 +75,9 @@ def moving_average_trend_sniper(high: pd.Series, low: pd.Series, close: pd.Serie
     close_sma = close.rolling(window=2, min_periods=1).mean().fillna(close)
     signal = pd.Series(np.where(close_sma > mats_line, 1, -1), index=close.index)
     # Ensure signal is persistent by filling forward
-    signal = signal.fillna(method='ffill').fillna(-1)  # Default to -1 for initial NaN
+    signal = signal.ffill().fillna(-1)  # Default to -1 for initial NaN
 
     return pd.DataFrame({
         'signal': signal,
         'mats_line': mats_line
-    }, index=close.index)
+    }, index=close.index).reindex(full_index)

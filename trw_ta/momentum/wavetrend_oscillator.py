@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import trw_ta as ta
 from trw_ta import register_outputs
+from trw_ta.ta_core import valid_data_prefix
 
 @register_outputs('cl', 'sig')
 def wavetrend_oscillator(
@@ -52,12 +53,11 @@ def wavetrend_oscillator(
     for s, name in zip([high, low, close], ["high", "low", "close"]):
         if not isinstance(s, pd.Series):
             raise TypeError(f"{name} must be a pandas Series")
-        if s.isna().any():
-            raise ValueError(f"{name} contains NaN")
     if len(high) != len(low) or len(high) != len(close):
         raise ValueError("high, low, close must have the same length")
+    (high, low, close), full_index = valid_data_prefix(high, low, close)
     if len(high) < max(n1, n2, 50):
-        raise ValueError("Not enough data (need at least max(n1,n2,50) rows)")
+        raise ValueError("Not enough data (need at least max(n1,n2,50) non-NaN rows)")
 
 
     ap = (high + low + close) / 3.0                     # hlc3
@@ -74,7 +74,7 @@ def wavetrend_oscillator(
     direction = pd.Series(0, index=wt1.index)
     direction = direction.mask(rising, 1)
     direction = direction.mask(falling, -1)
-    direction = direction.fillna(method="ffill").fillna(0).astype(int)
+    direction = direction.ffill().fillna(0).astype(int)
 
     if smooth:
         wt1 = ta.ma(wt1, ma_len, ma_type)
@@ -85,4 +85,4 @@ def wavetrend_oscillator(
             "sig": direction # +1 / -1 / 0
         },
         index=high.index,
-    )
+    ).reindex(full_index)
